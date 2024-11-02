@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Register = () => {
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/users/register', {
-                username,
+            const response = await axios.post('http://localhost:5000/api/auth/register', {
+                name,
                 email,
                 password,
             });
@@ -26,13 +26,13 @@ const Register = () => {
             <h2 className="text-center mb-4">Regjistrohu</h2>
             <form onSubmit={handleRegister} className="border p-4 rounded shadow">
                 <div className="mb-3">
-                    <label htmlFor="username" className="form-label">Username</label>
+                    <label htmlFor="name" className="form-label">Name</label>
                     <input
                         type="text"
-                        id="username"
+                        id="name"
                         className="form-control"
-                        placeholder="Username"
-                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="name"
+                        onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </div>

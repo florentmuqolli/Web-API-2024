@@ -4,7 +4,10 @@ const User = require('../models/user');
 
 // Funksioni për regjistrimin e përdoruesit
 const registerUser  = async (req, res) => {
-    const { username, password, email, role } = req.body;
+    console.log("Request Body:", req.body);
+    const { name, password, email, role } = req.body; // Correct fields
+
+    console.log("Registering user:", { name, email, role });
 
     try {
         // Kontrolloni nëse përdoruesi ekziston
@@ -18,15 +21,16 @@ const registerUser  = async (req, res) => {
 
         // Krijoni një përdorues të ri
         const user = await User.create({
-            username,
-            password: hashedPassword,
+            name,
             email,
+            password: hashedPassword,
             role: role || 'user', // Default to 'user' if no role is provided
         });
 
         res.status(201).json({ message: 'Përdorues i regjistruar me sukses' });
     } catch (error) {
-        res.status(500).json({ message: 'Gabim në regjistrim' });
+        console.error('Registration Error:', error);
+        res.status(500).json({ message: 'Gabim në regjistrim', error: error.message });
     }
 };
 
@@ -34,15 +38,19 @@ const registerUser  = async (req, res) => {
 const loginUser  = async (req, res) => {
     const { email, password } = req.body;
 
+    console.log('Attempting to log in with email:', email);
+
     try {
         // Gjeni përdoruesin
         const user = await User.findOne({ email });
+        console.log('User found:', user);
         if (!user) {
             return res.status(400).json({ message: 'Përdoruesi nuk ekziston' });
         }
 
         // Kontrolloni fjalëkalimin
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log('Password match status:', isMatch);
         if (!isMatch) {
             return res.status(400).json({ message: 'Fjalëkalimi i gabuar' });
         }
@@ -52,6 +60,7 @@ const loginUser  = async (req, res) => {
 
         res.status(200).json({ token });
     } catch (error) {
+        console.error('Login Error:', error);
         res.status(500).json({ message: 'Gabim në autentifikim' });
     }
 };

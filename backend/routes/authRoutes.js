@@ -11,8 +11,14 @@ router.post('/register', registerUser );
 // Route for user login
 router.post('/login', loginUser );
 
+router.get('/test', (req, res) => {
+    console.log('Test route accessed');
+    res.status(200).json({ message: 'Test route working' });
+});
+
 // Example of a protected route for admins
 router.get('/admin', authMiddleware, roleMiddleware(['admin']), (req, res) => {
+    console.log('Admin route accessed');
     res.status(200).json({ message: 'Welcome Admin!' });
 });
 
