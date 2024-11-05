@@ -5,12 +5,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import Register from './components/Register';
 import Login from './components/Login';
+import background from './bg.PNG'
+
 
 const App = () => {
     const [isRegistering, setIsRegistering] = useState(true); 
 
     return (
-        <div>
+        <div style={{
+            backgroundImage: `url(${background})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            minHeight: '100vh'
+        }}>
             <Header />
             <h1>{isRegistering ? 'Regjistrohu' : 'Identifikohu'}</h1>
             {isRegistering ? <Register /> : <Login />}

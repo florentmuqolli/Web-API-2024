@@ -1,12 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 
 dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(cors({
+    origin: 'http://localhost:3000', // Adjust this if your frontend is hosted on a different port
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Include any other methods you might use
+}));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
