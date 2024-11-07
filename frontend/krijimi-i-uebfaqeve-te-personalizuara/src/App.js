@@ -13,13 +13,13 @@ const App = () => {
 
     return (
         <div style={{
-            backgroundImage: `url(${background})`,
+            background: '#0D1117',
+            //backgroundImage: `url(${background})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             minHeight: '100vh'
         }}>
             <Header />
-            <h1>{isRegistering ? 'Regjistrohu' : 'Identifikohu'}</h1>
             {isRegistering ? <Register /> : <Login />}
             <div className="d-flex justify-content-center align-items-center">
             <button onClick={() => setIsRegistering(!isRegistering)} className='btn btn-link mt-2 '>
