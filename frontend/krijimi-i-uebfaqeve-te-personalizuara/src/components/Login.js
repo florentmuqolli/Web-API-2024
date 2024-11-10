@@ -28,34 +28,32 @@ const Login = () => {
     };
 
     return (
-        <div className="container mt-4">
-            <h2 className="text-center mb-4 text-#63F6FF">Identifikohu</h2>
+        <div className="container mt-4 w-50">
+            <h2 className="text-center mb-4 text-light">Identifikohu</h2>
             {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleLogin} className="border p-4 rounded shadow">
+            <form onSubmit={handleLogin} className="border p-4 rounded" style={{background:'#151B23'}}>
                 <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email</label>
-                    <input
+                    <label htmlFor="email" className="form-label text-light">Email</label>
+                    <input style={{background:'#0D1117'}}
                         type="email"
                         id="email"
-                        className="form-control"
-                        placeholder="Email"
+                        className="form-control border-dark text-light"
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password</label>
-                    <input
+                    <label htmlFor="password" className="form-label text-light">Password</label>
+                    <input style={{background:'#0D1117'}}
                         type="password"
                         id="password"
-                        className="form-control"
-                        placeholder="Password"
+                        className="form-control border-dark text-light"
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
                 {success && <div className="alert alert-success">{success}</div>}
-                <button type="submit" className="btn btn-primary w-100">Identifikohu</button>
+                <button type="submit" className="btn text-light w-100" style={{background:'#238636'}}>Identifikohu</button>
             </form>
         </div>
     );

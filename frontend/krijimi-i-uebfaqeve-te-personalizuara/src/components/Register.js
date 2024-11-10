@@ -39,7 +39,7 @@ const Register = () => {
                     <input style={{background:'#0D1117'}}
                         type="text"
                         id="name"
-                        className="form-control border-dark"
+                        className="form-control border-dark text-light"
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
@@ -49,7 +49,7 @@ const Register = () => {
                     <input style={{background:'#0D1117'}}
                         type="email"
                         id="email"
-                        className="form-control border-dark"
+                        className="form-control border-dark text-light"
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
@@ -59,7 +59,7 @@ const Register = () => {
                     <input style={{background:'#0D1117'}}
                         type="password"
                         id="password"
-                        className="form-control border-dark"
+                        className="form-control border-dark text-light"
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
