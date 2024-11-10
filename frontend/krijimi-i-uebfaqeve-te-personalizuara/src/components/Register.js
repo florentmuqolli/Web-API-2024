@@ -33,7 +33,7 @@ const Register = () => {
         <div className="container mt-4 w-50">
             <h2 className="text-center mb-4 text-light">Regjistrohu</h2>
             {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleRegister} className="border p-4 rounded" style={{background:'#151B23'}}>
+            <form onSubmit={handleRegister} className="border p-4 rounded border-dark" style={{background:'#151B23'}}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label text-light">Name</label>
                     <input style={{background:'#0D1117'}}

@@ -31,7 +31,7 @@ const Login = () => {
         <div className="container mt-4 w-50">
             <h2 className="text-center mb-4 text-light">Identifikohu</h2>
             {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleLogin} className="border p-4 rounded" style={{background:'#151B23'}}>
+            <form onSubmit={handleLogin} className="border p-4 rounded border-dark" style={{background:'#151B23'}}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label text-light">Email</label>
                     <input style={{background:'#0D1117'}}
