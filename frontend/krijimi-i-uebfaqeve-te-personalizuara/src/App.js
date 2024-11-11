@@ -7,6 +7,7 @@ import Login from './components/Login';
 import MainPage from './components/MainPage';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 const App = () => {
     const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -17,12 +18,7 @@ const App = () => {
     };
 
     return (
-        <div style={{
-            background: '#0D1117',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            minHeight: '100vh'
-        }}>
+        <div className={isAuthenticating ? 'auth-background' : 'app-background'}>
             <Header onAuthToggle={handleAuthToggle} isAuthenticating={isAuthenticating} />
             {isAuthenticating ? (
                 isRegistering ? <Register /> : <Login />

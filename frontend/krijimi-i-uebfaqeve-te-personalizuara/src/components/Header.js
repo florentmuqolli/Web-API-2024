@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import logo from './Designernobgf.png';
 
 const Header = ({ onAuthToggle, isAuthenticating }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
+
+    const buttonStyle = {
+        color: 'white',
+        border: isHovered ? '2px solid #238636' : '2px solid #ccc',
+        backgroundColor: isHovered ? '#238636' : 'transparent',
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-transparent d-flex justify-content-between px-5 py-3">
-            <a className="navbar-brand text-light" href="MainPage.js">Ueb</a>
+            {/* Replace the text with an image */}
+            <a className="navbar-brand text-light" href="MainPage.js">
+                <img src={logo} alt="Logo" style={{ height: '80px' }} />
+            </a>
             
             <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
                 <ul className="navbar-nav">
@@ -21,7 +36,10 @@ const Header = ({ onAuthToggle, isAuthenticating }) => {
             
             <button 
                 onClick={onAuthToggle} 
-                className="btn btn-outline-success my-2 my-sm-0 ml-3"
+                className="btn my-2 my-sm-0 ml-3"
+                style={buttonStyle}
+                onMouseEnter={handleMouseEnter} 
+                onMouseLeave={handleMouseLeave}
             >
                 {isAuthenticating ? 'Back to Home' : 'Login / Register'}
             </button>
