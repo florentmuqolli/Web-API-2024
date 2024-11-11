@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -19,7 +18,7 @@ const App = () => {
 
     return (
         <div className={isAuthenticating ? 'auth-background' : 'app-background'}>
-            <Header onAuthToggle={handleAuthToggle} isAuthenticating={isAuthenticating} />
+            <Header onAuthToggle={handleAuthToggle} isAuthenticating={isAuthenticating} currentPage={isAuthenticating ? 'auth' : 'home'}/>
             {isAuthenticating ? (
                 isRegistering ? <Register /> : <Login />
             ) : (
