@@ -1,17 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/usersController');
-const { registerUser , loginUser  } = require('../controllers/auth'); // Importoni funksionet e regjistrimit dhe autentifikimit
-const authMiddleware = require('../middleware/authMiddleware'); // Importoni middleware-in për autentifikim
+const { registerUser , loginUser  } = require('../controllers/auth'); 
+const authMiddleware = require('../middleware/authMiddleware'); 
 
-// Rrugët për menaxhimin e përdoruesve
-router.post('/', usersController.createUser ); // Krijimi i përdoruesit
-router.get('/:id', authMiddleware, usersController.getUser ); // Marrja e informacionit të përdoruesit (mbrojtur)
-router.put('/:id', authMiddleware, usersController.updateUser ); // Përditësimi i informacionit të përdoruesit (mbrojtur)
-router.delete('/:id', authMiddleware, usersController.deleteUser ); // Fshirja e përdoruesit (mbrojtur)
+router.post('/', usersController.createUser ); 
+router.get('/:id', authMiddleware, usersController.getUser ); 
+router.put('/:id', authMiddleware, usersController.updateUser ); 
+router.delete('/:id', authMiddleware, usersController.deleteUser ); 
 
-// Rrugët për regjistrimin dhe autentifikimin e përdoruesve
-router.post('/register', registerUser ); // Rruga për regjistrimin e përdoruesit
-router.post('/login', loginUser ); // Rruga për autentifikimin e përdoruesit
+router.post('/register', registerUser ); 
+router.post('/login', loginUser ); 
 
 module.exports = router;

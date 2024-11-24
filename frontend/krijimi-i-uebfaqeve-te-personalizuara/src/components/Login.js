@@ -20,9 +20,9 @@ const Login = () => {
         } catch (error) {
             console.error('Gabim në autentifikim:', error.message);
             if (error.response && error.response.data.message) {
-                setErrorMessage(error.response.data.message); // Show specific error message from the server
+                setErrorMessage(error.response.data.message); 
             } else {
-                setErrorMessage('Gabim në identifikim!'); // Fallback error message
+                setErrorMessage('Gabim në identifikim!'); 
             }
         }
     };

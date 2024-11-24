@@ -4,20 +4,20 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Adjust this if your frontend is hosted on a different port
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Include any other methods you might use
+    origin: 'http://localhost:3000', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
 }));
 
-// Middleware to parse JSON bodies
+
 app.use(express.json());
 
-//Middlewware to log requests
+
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();

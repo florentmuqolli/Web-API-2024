@@ -22,9 +22,9 @@ const Register = () => {
         } catch (error) {
             console.error('Gabim në regjistrim:', error.response);
             if (error.response && error.response.data.message) {
-                setErrorMessage(error.response.data.message); // Show specific error message from the server
+                setErrorMessage(error.response.data.message); 
             } else {
-                setErrorMessage('Gabim në regjistrim!'); // Fallback error message
+                setErrorMessage('Gabim në regjistrim!'); 
             }
         }
     };
