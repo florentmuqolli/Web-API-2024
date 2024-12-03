@@ -5,7 +5,7 @@ exports.createUser  = async (req, res) => {
         const { name, email, password } = req.body;
         const newUser  = new User({ name, email, password });
         await newUser .save();
-        res.status(201).json(newUser );
+        res.status(201).json({ id: newUser._id, name: newUser.name, email: newUser.email });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
