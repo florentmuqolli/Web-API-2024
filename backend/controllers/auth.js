@@ -48,9 +48,9 @@ const loginUser  = async (req, res) => {
             return res.status(400).json({ message: 'Fjalëkalimi i gabuar' });
         }
 
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '30d' });
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token, userRole: user.role });
 
-        res.status(200).json({ token });
     } catch (error) {
         console.error('Login Error:', error);
         res.status(500).json({ message: 'Gabim në autentifikim' });
