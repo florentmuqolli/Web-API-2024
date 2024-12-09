@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { updateOrder } from '../api/api';  // Import the API function
+import { updateOrder } from '../../api/api';  // Import the API function
 
 const UpdateOrderForm = () => {
     const [orderId, setOrderId] = useState('');

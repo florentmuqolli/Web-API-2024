@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getOrders } from '../api/api';  // Import the API function
+import { getOrders } from '../../api/api';  // Import the API function
 
 const OrdersList = () => {
     const [orders, setOrders] = useState([]);
