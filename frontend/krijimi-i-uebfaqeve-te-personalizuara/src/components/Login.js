@@ -15,19 +15,18 @@ const Login = ({ setIsAuthenticated }) => {
         setErrorMessage('');
         setSuccessMessage('');
         setIsLoading(true);
-
+    
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', {
-                email,
-                password,
-            });
-
-            localStorage.setItem('authToken', response.data.token);
+            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+            
+            console.log('Login Response:', response.data); // Debug log
+            localStorage.setItem('authToken', response.data.accessToken);
             localStorage.setItem('userRole', response.data.userRole);
-
+    
+            console.log('Token Saved:', localStorage.getItem('authToken')); // Debug log
             setSuccessMessage('Login successful!');
             setIsAuthenticated(true);
-
+    
             const role = response.data.userRole;
             navigate(role === 'admin' || role === 'employee' ? '/adminpanel' : '/MainPage');
         } catch (error) {
@@ -36,6 +35,7 @@ const Login = ({ setIsAuthenticated }) => {
             setIsLoading(false);
         }
     };
+    
 
     return (
         <div className="container mt-4 w-50">

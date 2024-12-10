@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createOrder } from '../../api/orders';
 import './formStyles.css';
 
-const CreateOrderForm = ({ onOrderCreated, closeForm }) => {
+const CreateOrder = ({ closeForm, onOrderCreated, setNotification }) => {
     const [productId, setProductId] = useState('');
     const [quantity, setQuantity] = useState('');
     const [totalPrice, setTotalPrice] = useState('');
@@ -11,55 +11,55 @@ const CreateOrderForm = ({ onOrderCreated, closeForm }) => {
         e.preventDefault();
         const orderData = { productId, quantity, totalPrice };
         const response = await createOrder(orderData);
-        if (response.id) {
-            alert('Order created successfully!');
+        if (response.message) {
+            setNotification({ message: response.message, type: 'success', visible: true });
             onOrderCreated();
             closeForm();
         } else {
-            alert('Error creating order');
+            setNotification({ message: 'Error creating order', type: 'error', visible: true });
         }
     };
 
     return (
-        <div className="modal">
-            <form className="order-form" onSubmit={handleSubmit}>
+        <div className="form-overlay">
+            <div className="form-modal">
                 <button className="close-button" onClick={closeForm} type="button">
                     ×
                 </button>
                 <h2>Create Order</h2>
-                <label>
-                    Product ID:
-                    <input
-                        type="number"
-                        value={productId}
-                        onChange={(e) => setProductId(e.target.value)}
-                        required
-                    />
-                </label>
-                <label>
-                    Quantity:
-                    <input
-                        type="number"
-                        value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)}
-                        required
-                    />
-                </label>
-                <label>
-                    Total Price:
-                    <input
-                        type="number"
-                        value={totalPrice}
-                        onChange={(e) => setTotalPrice(e.target.value)}
-                        required
-                    />
-                </label>
-                <button type="submit" className="submit-button">
-                    Create Order
-                </button>
-            </form>
+                <form className="order-form" onSubmit={handleSubmit}>
+                    <label>
+                        Product ID:
+                        <input
+                            type="number"
+                            value={productId}
+                            onChange={(e) => setProductId(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Quantity:
+                        <input
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setQuantity(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Total Price:
+                        <input
+                            type="number"
+                            value={totalPrice}
+                            onChange={(e) => setTotalPrice(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <button type="submit" className="submit-button">Create Order</button>
+                </form>
+            </div>
         </div>
     );
 };
 
-export default CreateOrderForm;
+export default CreateOrder;

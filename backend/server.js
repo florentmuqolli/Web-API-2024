@@ -8,6 +8,9 @@ const orderRoutes = require('./routes/orderRoutes');
 dotenv.config();
 
 const app = express();
+
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({

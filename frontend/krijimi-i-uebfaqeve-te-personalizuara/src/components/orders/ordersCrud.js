@@ -1,3 +1,4 @@
+// OrdersCRUD.js
 import React, { useState, useEffect } from 'react';
 import { getOrders, deleteOrder } from '../../api/orders';
 import CreateOrderForm from './createOrder';
@@ -9,34 +10,33 @@ const OrdersCRUD = () => {
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [isCreateFormVisible, setIsCreateFormVisible] = useState(false);
     const [isUpdateFormVisible, setIsUpdateFormVisible] = useState(false);
+    const [notification, setNotification] = useState({ message: '', type: '', visible: false });
 
     const fetchOrders = async () => {
         const fetchedOrders = await getOrders();
-        console.log('Fetched Orders:', fetchedOrders);
         setOrders(fetchedOrders);
     };
 
     const handleDelete = async (orderId) => {
         const response = await deleteOrder(orderId);
-        alert(response.message || 'Order deleted successfully');
+        setNotification({ message: response.message || 'Order deleted successfully', type: 'success', visible: true });
         fetchOrders();
     };
 
     const handleEdit = (orderId) => {
-        console.log("Editing order ID:", orderId);
         setSelectedOrderId(orderId);
         setIsUpdateFormVisible(true);
+        setIsCreateFormVisible(false); 
     };
-
-    useEffect(() => {
-        console.log("isCreateFormVisible:", isCreateFormVisible);
-        console.log("isUpdateFormVisible:", isUpdateFormVisible);
-    }, [isCreateFormVisible, isUpdateFormVisible]); 
 
     const closeForms = () => {
         setIsCreateFormVisible(false);
         setIsUpdateFormVisible(false);
         setSelectedOrderId(null);
+    };
+
+    const closeNotification = () => {
+        setNotification({ ...notification, visible: false });
     };
 
     useEffect(() => {
@@ -48,37 +48,49 @@ const OrdersCRUD = () => {
             <h2>Orders Management</h2>
             <button
                 className="create-button"
-                onClick={() => setIsCreateFormVisible(true)}
+                onClick={() => {
+                    setIsCreateFormVisible(true);
+                    setIsUpdateFormVisible(false);
+                }}
             >
                 Create New Order
             </button>
 
             {isCreateFormVisible && (
-                <div className="orders-modal">
-                    <div className="orders-modal-content">
-                        <button className="orders-close-button" onClick={closeForms}>
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        {/*<button className="close-button" onClick={closeForms}>
                             &times;
-                        </button>
+                        </button>*/}
                         <CreateOrderForm 
                             onOrderCreated={fetchOrders}  
                             closeForm={closeForms}
+                            setNotification={setNotification} 
                         />
                     </div>
                 </div>
             )}
 
             {isUpdateFormVisible && selectedOrderId && (
-                <div className="orders-modal">
-                    <div className="orders-modal-content">
-                        <button className="orders-close-button" onClick={closeForms}>
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        {/*<button className="close-button" onClick={closeForms}>
                             &times;
-                        </button>
+                        </button>*/}
                         <UpdateOrderForm
                             orderId={selectedOrderId} 
                             onOrderUpdated={fetchOrders} 
                             closeForm={closeForms} 
+                            setNotification={setNotification} 
                         />
                     </div>
+                </div>
+            )}
+
+            {notification.visible && (
+                <div className={`notification ${notification.type}`}>
+                    <span>{notification.message}</span>
+                    <button className="not-button" onClick={closeNotification}>×</button>
                 </div>
             )}
 

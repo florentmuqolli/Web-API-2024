@@ -15,6 +15,9 @@ const authMiddleware = (req, res, next) => {
         console.log('Token decoded:', req.user);
         next(); 
     } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Tokeni ka skaduar, identifikohuni prapë' });
+        }
         return res.status(403).json({ message: 'Token i pavlefshëm' });
     }
 };

@@ -13,30 +13,44 @@ const AdminPanel = () => {
   const [activeComponent, setActiveComponent] = useState("orders");
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      const decodedToken = JSON.parse(atob(token.split(".")[1]));
-      setUserRole(decodedToken.role);
-      setIsAuthenticated(true);
-    }else{
-      setIsAuthenticated(false);
-      navigate("/Login");
+    const token = localStorage.getItem('authToken');
+    console.log('Auth Token in localStorage:', token); // Debug log
+
+    if (!token) {
+        navigate('/Login');
+        return;
     }
-  }, [navigate]);
+
+    try {
+        const tokenParts = token.split('.');
+        if (tokenParts.length !== 3) throw new Error('Invalid token format');
+
+        const decodedPayload = JSON.parse(atob(tokenParts[1]));
+        console.log('Decoded Payload:', decodedPayload);
+
+        setUserRole(decodedPayload.role);
+        setIsAuthenticated(true);
+    } catch (error) {
+        console.error('Error decoding token:', error.message);
+        navigate('/Login');
+    }
+}, [navigate]);
+
 
   const handleSignOut = () => {
     console.log("User is signing out...");
     localStorage.removeItem("authToken");
-    localStorage.removeItem('userRole');
     setIsAuthenticated(false);
     setUserRole(null);
     navigate("/Login");
   };
 
+  // If the user is not authenticated, avoid rendering until authentication is complete
   if (!isAuthenticated) {
     return null;
   }
 
+  // Restrict access for unauthorized roles
   if (userRole !== "admin" && userRole !== "employee") {
     return <p>Unauthorized access</p>;
   }

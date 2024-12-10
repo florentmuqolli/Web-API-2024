@@ -4,10 +4,11 @@
   }
   
   .sidebar {
-    width: 200px;
+    width: 250px;
     background-color: #22252b;
     padding: 20px;
     color: white;
+    flex-shrink: 0;
   }
   
   .sidebar ul {
@@ -16,10 +17,11 @@
   }
   
   .sidebar ul li {
-    margin: 15px 0;
+    margin: 18px 0;
     cursor: pointer;
     color: #fff;
   }
+
   
   .sidebar ul li:hover {
     text-decoration: underline;
@@ -32,3 +34,18 @@
     overflow-y: auto;
   }
   
+  @media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column; 
+    }
+
+    .sidebar {
+        width: 100%; 
+        padding: 10px; 
+        text-align: center;
+    }
+
+    .posts-view {
+        padding: 10px; 
+    }
+}

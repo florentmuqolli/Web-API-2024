@@ -35,7 +35,7 @@ export const createOrder = async (orderData) => {
             },
         });
         console.log('Order created successfully:', response.data);
-        return response.data;  // Return the created order data
+        return response.data;  
     } catch (error) {
         console.error('Error creating order:', error);
         return { message: 'Failed to create order' };
@@ -76,7 +76,7 @@ export const deleteOrder = async (id) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        return response.data;  // Return confirmation of deletion
+        return response.data; 
     } catch (error) {
         console.error('Error deleting order:', error);
         return { message: 'Failed to delete order' };

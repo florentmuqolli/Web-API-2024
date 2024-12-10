@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Added useLocation
+import { useNavigate, useLocation } from 'react-router-dom';
 import logo from './Designerm.png';
 import logoAlt from './Designer.png';
 
 const Header = ({ isAuthenticated, handleSignOut }) => {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation(); // Get current location
+    const location = useLocation();
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
@@ -17,10 +17,8 @@ const Header = ({ isAuthenticated, handleSignOut }) => {
         backgroundColor: isHovered ? '#238636' : 'transparent',
     };
 
-    // Logo change logic based on authentication state
     const logoToShow = isAuthenticated ? logoAlt : logo;
 
-    // Back button visibility logic
     const isAuthPage = location.pathname === '/Login' || location.pathname === '/Register';
 
     return (

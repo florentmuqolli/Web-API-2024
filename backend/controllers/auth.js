@@ -48,8 +48,8 @@ const loginUser  = async (req, res) => {
             return res.status(400).json({ message: 'Fjalëkalimi i gabuar' });
         }
 
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(200).json({ token, userRole: user.role });
+        const accessToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '15m' });
+        res.status(200).json({ accessToken, userRole: user.role });
 
     } catch (error) {
         console.error('Login Error:', error);
