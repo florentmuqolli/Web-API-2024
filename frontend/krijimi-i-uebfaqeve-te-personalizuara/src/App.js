@@ -18,11 +18,11 @@ const App = () => {
 
     const handleSignOut = () => {
         console.log("User is signing out...");
-        localStorage.removeItem('authToken'); // Remove the auth token
-        localStorage.removeItem('userRole'); // Remove user role
-        setIsAuthenticated(false); // Update state to reflect the user is logged out
+        localStorage.removeItem('authToken'); 
+        localStorage.removeItem('userRole');
+        setIsAuthenticated(false); 
         setUserRole(null);
-        navigate('/Login'); // Redirect to the login page
+        navigate('/Login');
     };
 
     useEffect(() => {
@@ -30,6 +30,7 @@ const App = () => {
         const role = localStorage.getItem('userRole');
 
         if (authToken && role) {
+            console.log("Signing in....")
             setIsAuthenticated(true);
             setUserRole(role);
         } else {
@@ -39,19 +40,24 @@ const App = () => {
 
         if (isAuthenticated && userRole) {
             if (userRole === 'admin' || userRole === 'employee') {
-                navigate('/adminpanel'); // Redirect to admin panel
+                navigate('/adminpanel'); 
             } else {
-                navigate('/MainPage'); // Redirect to main page for regular users
+                navigate('/MainPage'); 
             }
-        } else if (!isAuthenticated && location.pathname !== '/Login' && location.pathname !== '/Register') {
-            navigate('/Login'); // Ensure unauthenticated users are redirected to login
         }
-    }, [isAuthenticated, userRole, navigate, location.pathname]);
+    }, [isAuthenticated, userRole, navigate]);
 
     console.log("Current location:", location.pathname);
 
+    const getBackgroundClass = () => {
+        if (location.pathname === '/Login' || location.pathname === '/Register') {
+            return 'auth-background';
+        }
+        return 'app-background';
+    };
+
     return (
-        <div className="app-background">
+        <div className={getBackgroundClass()}>
             {location.pathname !== '/adminpanel' && (
                 <Header
                     isAuthenticated={isAuthenticated}

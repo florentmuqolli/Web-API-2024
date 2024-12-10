@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { updateOrder } from '../../api/orders';
+import { createOrder } from '../../api/orders';
 import './formStyles.css';
 
-const UpdateOrderForm = ({ orderId, closeForm, onOrderUpdated }) => {
+const CreateOrderForm = ({ onOrderCreated, closeForm }) => {
     const [productId, setProductId] = useState('');
     const [quantity, setQuantity] = useState('');
     const [totalPrice, setTotalPrice] = useState('');
@@ -10,13 +10,13 @@ const UpdateOrderForm = ({ orderId, closeForm, onOrderUpdated }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const orderData = { productId, quantity, totalPrice };
-        const response = await updateOrder(orderId, orderData);
-        if (response.message) {
-            alert(response.message);
-            onOrderUpdated();
+        const response = await createOrder(orderData);
+        if (response.id) {
+            alert('Order created successfully!');
+            onOrderCreated();
             closeForm();
         } else {
-            alert('Error updating order');
+            alert('Error creating order');
         }
     };
 
@@ -26,7 +26,7 @@ const UpdateOrderForm = ({ orderId, closeForm, onOrderUpdated }) => {
                 <button className="close-button" onClick={closeForm} type="button">
                     ×
                 </button>
-                <h2>Update Order</h2>
+                <h2>Create Order</h2>
                 <label>
                     Product ID:
                     <input
@@ -55,11 +55,11 @@ const UpdateOrderForm = ({ orderId, closeForm, onOrderUpdated }) => {
                     />
                 </label>
                 <button type="submit" className="submit-button">
-                    Update Order
+                    Create Order
                 </button>
             </form>
         </div>
     );
 };
 
-export default UpdateOrderForm;
+export default CreateOrderForm;

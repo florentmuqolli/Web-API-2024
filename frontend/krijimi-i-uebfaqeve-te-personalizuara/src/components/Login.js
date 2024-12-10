@@ -80,7 +80,7 @@ const Login = ({ setIsAuthenticated }) => {
                     className="btn btn-link mt-2 text-light w-100"
                     onClick={() => navigate('/Register')}
                 >
-                    Need an account? Register here
+                    Don't have an account? Register
                 </button>
             </form>
         </div>

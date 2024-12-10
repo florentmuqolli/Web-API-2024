@@ -1,69 +1,70 @@
-import React, { Component } from 'react';
-import { Link, Routes, Navigate, useNavigate } from 'react-router-dom'; 
-import './adminpanel.css'; 
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import OrdersCRUD from "./orders/ordersCrud"; 
+import ProductsCRUD from "./products/prodCrud"; 
+import UsersCRUD from "./users/usersCrud"; 
+import EmployeesCRUD from "./employees/empCrud"; 
+import "./adminpanel.css";
 
 const AdminPanel = () => {
-    const navigate = useNavigate();
-    const [userRole, setUserRole] = React.useState(null);
-    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const navigate = useNavigate();
+  const [userRole, setUserRole] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [activeComponent, setActiveComponent] = useState("orders");
 
-    React.useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT
-            setUserRole(decodedToken.role);
-            setIsAuthenticated(true);
-        }
-    }, []);
-
-    const handleSignOut = () => {
-        localStorage.removeItem('authToken');
-        setIsAuthenticated(false);
-        navigate('/'); // Use navigate to handle routing
-    };
-
-    if (!isAuthenticated) {
-        return <Navigate to="/" replace />;
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUserRole(decodedToken.role);
+      setIsAuthenticated(true);
+    }else{
+      setIsAuthenticated(false);
+      navigate("/Login");
     }
+  }, [navigate]);
 
-    if (userRole !== 'admin' && userRole !== 'employee') {
-        return <Navigate to="/" replace />;
-    }
+  const handleSignOut = () => {
+    console.log("User is signing out...");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem('userRole');
+    setIsAuthenticated(false);
+    setUserRole(null);
+    navigate("/Login");
+  };
 
-    return (
-        <div className="admin-panel">
-            <aside className="side-panel">
-                <h3>Admin Panel</h3>
-                <ul>
-                    <li>
-                        <Link to="orders">Orders Management</Link>
-                    </li>
-                    <li>
-                        <Link to="products">Products Management</Link>
-                    </li>
-                    <li>
-                        <Link to="users">Users Management</Link>
-                    </li>
-                    <li>
-                        <Link to="employees">Employees Management</Link>
-                    </li>
-                    <li>
-                        <button
-                            onClick={handleSignOut}
-                            className="btn btn-danger w-50 mt-3"
-                        >
-                            Sign Out
-                        </button>
-                    </li>
-                </ul>
-            </aside>
-            <main className="content">
-                <Routes>
-                    {/* Add routes for the admin panel's sub-pages */}
-                </Routes>
-            </main>
-        </div>
-    );
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  if (userRole !== "admin" && userRole !== "employee") {
+    return <p>Unauthorized access</p>;
+  }
+
+  return (
+    <div className="dashboard">
+      <aside className="sidebar">
+        <h3>Admin Panel</h3>
+        <ul>
+          <li onClick={() => setActiveComponent("orders")}>Orders Management</li>
+          <li onClick={() => setActiveComponent("products")}>Products Management</li>
+          <li onClick={() => setActiveComponent("users")}>Users Management</li>
+          <li onClick={() => setActiveComponent("employees")}>Employees Management</li>
+          <li>
+            <button onClick={handleSignOut} className="btn btn-danger">
+              Sign Out
+            </button>
+          </li>
+        </ul>
+      </aside>
+      <main className="posts-view">
+        {activeComponent === "orders" && <OrdersCRUD />}
+        {activeComponent === "products" && <ProductsCRUD />}
+        {activeComponent === "users" && <UsersCRUD />}
+        {activeComponent === "employees" && <EmployeesCRUD />}
+      </main>
+    </div>
+  );
 };
 
 export default AdminPanel;
