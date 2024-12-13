@@ -1,58 +1,80 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import OrdersCRUD from "./orders/ordersCrud"; 
 import ProductsCRUD from "./products/prodCrud"; 
 import UsersCRUD from "./users/usersCrud"; 
 import EmployeesCRUD from "./employees/empCrud"; 
 import "./adminpanel.css";
+import Cookies from 'js-cookie'; 
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import "core-js/stable/atob";
+
+
 
 const AdminPanel = () => {
   const navigate = useNavigate();
-  const [userRole, setUserRole] = useState(null);
+  const [userRole, setUserRole] = useState((Cookies.get('userRole'))  || '');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeComponent, setActiveComponent] = useState("orders");
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    console.log('Auth Token in localStorage:', token); // Debug log
-
+    const token = Cookies.get('authToken'); 
     if (!token) {
-        navigate('/Login');
-        return;
+      console.log("No token found, redirecting to login");
+      navigate("/Login");
+      return;
     }
-
+  
     try {
-        const tokenParts = token.split('.');
-        if (tokenParts.length !== 3) throw new Error('Invalid token format');
+      const decodedToken = jwtDecode(token);
+      console.log("Decoded Token:", decodedToken);
+      const role = Cookies.get('userRole');
+      setUserRole(role); 
+      setIsAuthenticated(true);
+  
+      if (decodedToken.exp * 1000 < Date.now()) {
+        console.log("Token has expired");
+        Cookies.remove("authToken");
+        handleSignOut();
+        return;
+      }
 
-        const decodedPayload = JSON.parse(atob(tokenParts[1]));
-        console.log('Decoded Payload:', decodedPayload);
-
-        setUserRole(decodedPayload.role);
-        setIsAuthenticated(true);
     } catch (error) {
-        console.error('Error decoding token:', error.message);
-        navigate('/Login');
+      console.log('Error decoding token:', error.message);
+      Cookies.remove("authToken");
+      Cookies.remove("userRole");
+      console.log("No token found, redirecting to login");
+      navigate("/Login");
     }
-}, [navigate]);
+  },[navigate]);
+  
 
-
-  const handleSignOut = () => {
+  {/*const handleSignOut = () => {
     console.log("User is signing out...");
-    localStorage.removeItem("authToken");
+    Cookies.remove("authToken"); 
     setIsAuthenticated(false);
     setUserRole(null);
     navigate("/Login");
+  };*/}
+
+  const handleSignOut = async () => {
+    try {
+      await axios.post('http://localhost:5000/api/auth/logout'); 
+      Cookies.remove('authToken');
+      window.location.href = '/Login';
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
-  // If the user is not authenticated, avoid rendering until authentication is complete
   if (!isAuthenticated) {
     return null;
   }
 
-  // Restrict access for unauthorized roles
   if (userRole !== "admin" && userRole !== "employee") {
-    return <p>Unauthorized access</p>;
+    console.error('Unauthorized access');
+    handleSignOut();
   }
 
   return (

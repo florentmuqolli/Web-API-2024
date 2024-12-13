@@ -1,17 +1,31 @@
 const express = require('express');
-const { registerUser , loginUser  } = require('../controllers/auth');
+const router = express.Router();
+const { registerUser, loginUser, verifyToken, getStatus } = require('../controllers/auth');
 const authMiddleware = require('../middleware/authMiddleware');
 const roleMiddleware = require('../middleware/roleMiddleware');
 
-const router = express.Router();
+router.post('/register', registerUser);
+router.post('/login', loginUser);
 
-router.post('/register', registerUser );
+router.get('/status', (req, res) => {
+    console.log('Status route hit');
+    console.log('Cookies:', req.cookies);
+    if (!req.cookies.authToken) {
+        return res.status(403).json({ message: 'Token not found.' });
+    }
+    verifyToken(req, res, () => {
+        getStatus(req, res);
+    });
+});
 
-router.post('/login', loginUser );
+router.post('/logout', (req, res) => {
+    res.clearCookie('authToken'); 
+    res.clearCookie('userRole');
+    return res.status(200).json({ message: 'Logged out successfully' });
+});
 
-router.get('/test', (req, res) => {
-    console.log('Test route accessed');
-    res.status(200).json({ message: 'Test route working' });
+router.get('/secure-endpoint', verifyToken, (req, res) => {
+    res.json({ message: 'You are authorized!' });
 });
 
 router.get('/admin', authMiddleware, roleMiddleware(['admin']), (req, res) => {

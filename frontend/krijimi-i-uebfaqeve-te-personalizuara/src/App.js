@@ -9,52 +9,71 @@ import AdminTools from './components/adminpanel';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Cookies from 'js-cookie'; 
+import axios from 'axios'; 
 
 const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
-    const [userRole, setUserRole] = useState(localStorage.getItem('userRole') || null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userRole, setUserRole] = useState((Cookies.get('userRole'))  || ''); 
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleSignOut = () => {
-        console.log("User is signing out...");
-        localStorage.removeItem('authToken'); 
-        localStorage.removeItem('userRole');
-        setIsAuthenticated(false); 
-        setUserRole(null);
-        navigate('/Login');
+    const handleSignOut = async () => {
+        try {
+            await axios.post('http://localhost:5000/api/auth/logout');
+            Cookies.remove('authToken');
+            Cookies.remove('userRole');
+            window.location.href = '/Login';
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
 
     useEffect(() => {
-        const authToken = localStorage.getItem('authToken');
-        const role = localStorage.getItem('userRole');
-
-        if (authToken && role) {
-            console.log("Signing in....")
-            setIsAuthenticated(true);
-            setUserRole(role);
-        } else {
-            setIsAuthenticated(false);
-            setUserRole(null);
-        }
-
-        if (isAuthenticated && userRole) {
-            if (userRole === 'admin' || userRole === 'employee') {
-                navigate('/adminpanel'); 
-            } else {
-                navigate('/MainPage'); 
+        const checkAuthStatus = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/auth/status', { withCredentials: true });
+                if (response.data.authenticated) {
+                    setIsAuthenticated(true);
+                    const role = Cookies.get('userRole');
+                    setUserRole(role); 
+                    console.log('userRole from cookies:', role);
+                } else {
+                    setIsAuthenticated(false);
+                    setUserRole('');
+                }
+            } catch (error) {
+                console.error('Error checking auth status:', error);
+                setIsAuthenticated(false);
+                setUserRole('');
             }
-        }
-    }, [isAuthenticated, userRole, navigate]);
+        };
+
+        checkAuthStatus();
+    }, []); 
 
     console.log("Current location:", location.pathname);
 
     const getBackgroundClass = () => {
-        if (location.pathname === '/Login' || location.pathname === '/Register') {
-            return 'auth-background';
+        switch (location.pathname) {
+            case '/Login':
+            case '/Register':
+                return 'auth-background';
+            default:
+                return 'app-background';
         }
-        return 'app-background';
     };
+
+    useEffect(() => {
+        if (isAuthenticated && userRole) {
+            console.log(`Authenticated: ${isAuthenticated}, Role: ${userRole}`);
+            if (userRole === 'admin' || userRole === 'employee') {
+                navigate('/adminpanel');
+            } else {
+                navigate('/MainPage');
+            }
+        }
+    }, [isAuthenticated, userRole, navigate]);
 
     return (
         <div className={getBackgroundClass()}>

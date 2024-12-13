@@ -1,8 +1,9 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 
 export const getOrders = async () => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
         return;

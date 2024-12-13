@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie'; 
 
 const Login = ({ setIsAuthenticated }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setErrorMessage] = useState('');
     const [success, setSuccessMessage] = useState('');
+    const [userRole, setUserRole] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -17,13 +19,22 @@ const Login = ({ setIsAuthenticated }) => {
         setIsLoading(true);
     
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-            
-            console.log('Login Response:', response.data); // Debug log
-            localStorage.setItem('authToken', response.data.accessToken);
-            localStorage.setItem('userRole', response.data.userRole);
+            const response = await axios.post(
+                'http://localhost:5000/api/auth/login',
+                { email, password },
+                { withCredentials: true }
+            );
     
-            console.log('Token Saved:', localStorage.getItem('authToken')); // Debug log
+            Cookies.set('authToken', response.data.accessToken, { expires: 1 });
+            Cookies.set('userRole', response.data.userRole, { expires: 1 });
+            console.log('Login response:', response.data);
+
+            console.log('accessToken:', response.data.accessToken);
+            console.log('userRole:', response.data.userRole);
+
+
+            setUserRole(response.data.userRole);
+    
             setSuccessMessage('Login successful!');
             setIsAuthenticated(true);
     
