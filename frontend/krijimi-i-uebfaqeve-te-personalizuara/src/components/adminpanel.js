@@ -28,7 +28,7 @@ const AdminPanel = () => {
   
     try {
       const decodedToken = jwtDecode(token);
-      console.log("Decoded Token:", decodedToken);
+      //console.log("Decoded Token:", decodedToken);
       const role = Cookies.get('userRole');
       setUserRole(role); 
       setIsAuthenticated(true);

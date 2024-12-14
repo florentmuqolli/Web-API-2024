@@ -24,7 +24,7 @@ export const getOrders = async () => {
 
 
 export const createOrder = async (orderData) => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
         return;
@@ -46,7 +46,7 @@ export const createOrder = async (orderData) => {
 
 
 export const updateOrder = async (id, orderData) => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
         return;
@@ -66,7 +66,7 @@ export const updateOrder = async (id, orderData) => {
 
 
 export const deleteOrder = async (id) => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
         return;

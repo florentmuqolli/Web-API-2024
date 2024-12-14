@@ -58,7 +58,7 @@ const UpdateOrderForm = ({ orderId, closeForm, onOrderUpdated, setNotification }
                             required
                         />
                     </label>
-                    <label>
+                    <label> 
                         Total Price:
                         <input
                             type="number"

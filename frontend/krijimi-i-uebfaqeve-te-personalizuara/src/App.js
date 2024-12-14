@@ -37,7 +37,7 @@ const App = () => {
                     setIsAuthenticated(true);
                     const role = Cookies.get('userRole');
                     setUserRole(role); 
-                    console.log('userRole from cookies:', role);
+                    //console.log('userRole from cookies:', role);
                 } else {
                     setIsAuthenticated(false);
                     setUserRole('');

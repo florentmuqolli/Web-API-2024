@@ -9,7 +9,7 @@ router.post('/login', loginUser);
 
 router.get('/status', (req, res) => {
     console.log('Status route hit');
-    console.log('Cookies:', req.cookies);
+    //console.log('Cookies:', req.cookies);
     if (!req.cookies.authToken) {
         return res.status(403).json({ message: 'Token not found.' });
     }
