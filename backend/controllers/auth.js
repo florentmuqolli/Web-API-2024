@@ -48,10 +48,18 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
+    console.log('Incoming Login Request:', req.body);
+
     const { email, password } = req.body;
+    
+    if (!email || !password) {
+        console.error('Missing fields:', { email, password });
+        return res.status(400).json({ message: 'Email and password are required' });
+    }
 
     try {
         const user = await User.findOne({ email });
+        console.log('User found:', user);
         if (!user) {
             return res.status(400).json({ message: 'User does not exist' });
         }

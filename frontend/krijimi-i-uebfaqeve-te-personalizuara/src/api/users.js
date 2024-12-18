@@ -1,18 +1,17 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const API_URL = 'http://localhost:5000/api/users';
-
-// Create a new user
 export const createUser = async (userData) => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
-        return;
+        return { message: 'Authentication required' };
     }
     try {
-        const response = await axios.post(API_URL, userData, {
+        const response = await axios.post('http://localhost:5000/api/users', userData, {
             headers: { Authorization: `Bearer ${token}` },
         });
+        console.log('User created:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error creating user:', error);
@@ -20,35 +19,37 @@ export const createUser = async (userData) => {
     }
 };
 
-// Fetch all users
-export const getUsers = async () => {
-    const token = localStorage.getItem('authToken');
+export const getUser = async () => {
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
         return [];
     }
     try {
-        const response = await axios.get(API_URL, {
-            headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.get('http://localhost:5000/api/users', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         });
-        return response.data;
+        console.log('Fetched users from API:', response.data); 
+        return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
         console.error('Error fetching users:', error);
         return [];
     }
 };
 
-// Update a user
 export const updateUser = async (id, userData) => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
-        return;
+        return { message: 'Authentication required' };
     }
     try {
-        const response = await axios.put(`${API_URL}/${id}`, userData, {
+        const response = await axios.put(`http://localhost:5000/api/users/${id}`, userData, {
             headers: { Authorization: `Bearer ${token}` },
         });
+        console.log('User updated:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error updating user:', error);
@@ -56,21 +57,23 @@ export const updateUser = async (id, userData) => {
     }
 };
 
-// Delete a user
 export const deleteUser = async (id) => {
-    const token = localStorage.getItem('authToken');
+    console.log('Deleting user with ID:', id);
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
-        return;
+        return { message: 'Authentication required' };
     }
     try {
-        const response = await axios.delete(`${API_URL}/${id}`, {
+        const response = await axios.delete(`http://localhost:5000/api/users/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
         });
+        console.log('User deleted:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error deleting user:', error);
         return { message: 'Failed to delete user' };
     }
 };
+
 

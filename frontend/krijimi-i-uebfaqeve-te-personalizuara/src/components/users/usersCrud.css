@@ -1,0 +1,155 @@
+.orders-container {
+    padding: 20px;
+}
+
+.create-button {
+    margin-bottom: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.create-button:hover {
+    background-color: #45a049; 
+}
+
+.edit-button {
+    background-color: #fbc02d; 
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #f9a825; 
+}
+
+.delete-button {
+    background-color: #f44336; /* Red */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table th, .orders-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.orders-table th {
+    background-color: #f2f2f2;
+}
+
+.orders-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.orders-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    width: 30%;
+    max-width: 400px;
+}
+
+/*.orders-close-button {
+    position: absolute;
+    color:#d32f2f;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border:none;
+    background: none;
+}*/
+
+.notification {
+    background-color: #4caf50; 
+    width: 20%;
+    color: white; 
+    padding: 15px; 
+    margin: 10px 0; 
+    border-radius: 5px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.notification.error {
+    background-color: #f44336; 
+}
+
+.not-button {
+    background: none; 
+    border: none; 
+    color: #f44336; 
+    font-size: 16px; 
+    cursor: pointer; 
+    margin-left: 15px; 
+}
+
+@media (max-width: 768px) {
+    .orders-container{
+        text-align: center;
+    }
+
+    .orders-table {
+        display: block; 
+        overflow-x: auto; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .orders-table th, .orders-table td {
+        display: block;
+        text-align: right;
+    }
+
+    .orders-table th {
+        position: absolute; 
+        left: -9999px; 
+    }
+
+    .orders-table tr {
+        margin-bottom: 15px; 
+    }
+}

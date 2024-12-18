@@ -1,76 +1,119 @@
 import React, { useState, useEffect } from 'react';
-import { updateProduct } from '../../api/products'; 
+import axios from 'axios';
+import './formStyles.css';
 
-const UpdateProductForm = ({ productId }) => {
+const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotification }) => {
     const [productName, setProductName] = useState('');
-    const [price, setPrice] = useState('');
-    const [quantity, setQuantity] = useState('');
     const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [category, setCategory] = useState('');
+    const [imageFile, setImageFile] = useState(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const response = await axios.get(`http://localhost:5000/api/products/${productId}`);
-            setProductName(response.data.productName);
-            setPrice(response.data.price);
-            setQuantity(response.data.quantity);
-            setDescription(response.data.description);
+            try {
+                const response = await axios.get(`http://localhost:5000/api/products/${productID}`);
+                if (response.data) {
+                    setProductName(response.data.productName || '');
+                    setDescription(response.data.description || '');
+                    setPrice(response.data.price || '');
+                    setCategory(response.data.category || '');
+                    setImageFile(response.data.imageFile || '');
+                }
+            } catch (error) {
+                console.error('Error fetching product:', error);
+            }
         };
-
-        if (productId) {
+        if (productID) {
             fetchProduct();
         }
-    }, [productId]);
+    }, [productID]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const productData = { productName, price, quantity, description };
-        const response = await updateProduct(productId, productData);
-        alert(response.message || 'Product updated successfully');
+        const formData = new FormData();
+        formData.append('productName', productName);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('category', category);
+        formData.append('image', imageFile);
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/products/${productID}`, {
+                method: 'PUT',
+                body: formData,
+            });
+
+            const result = await response.json();
+            console.log('Response:', result);
+            if (result.message) {
+                setNotification({ message: result.message, type: 'success', visible: true });
+                onProductUpdated();
+                closeForm();
+            } else {
+                setNotification({ message: 'Error updating product', type: 'error', visible: true });
+            }
+        } catch (error) {
+            console.error('Error updating product:', error);
+            setNotification({ message: 'Error updating product', type: 'error', visible: true });
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Product Name:
-                <input
-                    type="text"
-                    value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
-                    required
-                />
-            </label>
-            <br />
-            <label>
-                Price:
-                <input
-                    type="number"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    required
-                />
-            </label>
-            <br />
-            <label>
-                Quantity:
-                <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                    required
-                />
-            </label>
-            <br />
-            <label>
-                Description:
-                <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                />
-            </label>
-            <br />
-            <button type="submit">Update Product</button>
-        </form>
+        <div className="form-overlay">
+            <div className="form-modal">
+                <button className="close-button" onClick={closeForm} type="button">
+                    ×
+                </button>
+                <h2>Update Product</h2>
+                <form className="order-form" onSubmit={handleSubmit}>
+                    <label>
+                        Product Name:
+                        <input
+                            type="text"
+                            value={productName}
+                            onChange={(e) => setProductName(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Description:
+                        <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Price:
+                        <input
+                            type="number"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Category:
+                        <input
+                            type="text"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Image:
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setImageFile(e.target.files[0])}
+                        />
+                    </label>
+                    <button type="submit" className="submit-button">Update Product</button>
+                </form>
+            </div>
+        </div>
     );
 };
 

@@ -13,11 +13,13 @@ exports.createUser  = async (req, res) => {
 
 exports.getUser  = async (req, res) => {
     try {
+        console.log('Fetching user with ID:', req.params.id);
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ message: 'User  not found' });
         res.json(user);
     } catch (error) {
         res.status(400).json({ message: error.message });
+        console.error('Error fetching user:', error);
     }
 };
 

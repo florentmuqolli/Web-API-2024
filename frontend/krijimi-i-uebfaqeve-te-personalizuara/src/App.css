@@ -5,8 +5,9 @@
   background-attachment: fixed;
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow: visible; /* Allow parallax scrolling */
 }
+
 .auth-background {
   background: #0D1117;
   min-height: 100vh;

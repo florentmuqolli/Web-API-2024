@@ -1,18 +1,17 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const API_URL = 'http://localhost:5000/api/products';
-
-// Create a new product
 export const createProduct = async (productData) => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
         return;
     }
     try {
-        const response = await axios.post(API_URL, productData, {
+        const response = await axios.post('http://localhost:5000/api/products', productData, {
             headers: { Authorization: `Bearer ${token}` },
         });
+        console.log('Product created successfully:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error creating product:', error);
@@ -20,17 +19,17 @@ export const createProduct = async (productData) => {
     }
 };
 
-// Fetch all products
 export const getProducts = async () => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
-        return [];
+        return;
     }
     try {
-        const response = await axios.get(API_URL, {
+        const response = await axios.get('http://localhost:5000/api/products', {
             headers: { Authorization: `Bearer ${token}` },
         });
+        console.log('Fetched Products from API:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -38,15 +37,14 @@ export const getProducts = async () => {
     }
 };
 
-// Update a product
 export const updateProduct = async (id, productData) => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
         return;
     }
     try {
-        const response = await axios.put(`${API_URL}/${id}`, productData, {
+        const response = await axios.put(`http://localhost:5000/api/products/${id}`, productData, {
             headers: { Authorization: `Bearer ${token}` },
         });
         return response.data;
@@ -56,15 +54,14 @@ export const updateProduct = async (id, productData) => {
     }
 };
 
-// Delete a product
 export const deleteProduct = async (id) => {
-    const token = localStorage.getItem('authToken');
+    const token = Cookies.get('authToken');
     if (!token) {
         console.error('No token found, please log in.');
         return;
     }
     try {
-        const response = await axios.delete(`${API_URL}/${id}`, {
+        const response = await axios.delete(`http://localhost:5000/api/products/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         return response.data;

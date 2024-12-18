@@ -1,67 +1,79 @@
 import React, { useState, useEffect } from 'react';
-import { updateUser } from '../../api/users';
+import { updateUser, getUser } from '../../api/users';
+import './formStyles.css';
 
-const UpdateUserForm = ({ userId }) => {
-    const [username, setUsername] = useState('');
+const UpdateUserForm = ({ userId, closeForm, onUserUpdated, setNotification }) => {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [role, setRole] = useState('employee');
+    const [role, setRole] = useState('');
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const response = await axios.get(`http://localhost:5000/api/users/${userId}`);
-            setUsername(response.data.username);
-            setEmail(response.data.email);
-            setRole(response.data.role);
-        };
-
-        if (userId) {
-            fetchUser();
-        }
-    }, [userId]);
+            const fetchUserDetails = async () => {
+                const userDetails = await getUser(userId);
+                if (userDetails) {
+                    setName(userDetails.name || '');
+                    setEmail(userDetails.email || '');
+                    setRole(userDetails.role || '');
+                }
+            };
+            fetchUserDetails();
+        }, [userId]);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const userData = { username, email, role };
-        const response = await updateUser(userId, userData);
-        alert(response.message || 'User updated successfully');
-    };
+            e.preventDefault();
+            const userData = { name, email, role };
+            const response = await updateUser(userId, userData);
+            if (response.message) {
+                setNotification({ message: response.message, type: 'success', visible: true });
+                onUserUpdated();
+                closeForm();
+            } else {
+                setNotification({ message: 'Error updating user', type: 'error', visible: true });
+            }
+        };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Username:
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-            </label>
-            <br />
-            <label>
-                Email:
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-            </label>
-            <br />
-            <label>
-                Role:
-                <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    required
-                >
-                    <option value="employee">Employee</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </label>
-            <br />
-            <button type="submit">Update User</button>
-        </form>
+        <div className="form-overlay">
+            <div className="form-modal">
+                <button className="close-button" onClick={closeForm} type="button">
+                    ×
+                </button>
+                <h2>Update User</h2>
+                <form className="order-form" onSubmit={handleSubmit}>
+                    <label>
+                        Name:
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Email:
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Role:
+                        <select
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            required
+                        >
+                            <option value="employee">Employee</option>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </label>
+                    <button type="submit" className="submit-button">Update User</button>
+                </form>
+            </div>
+        </div>
     );
 };
 

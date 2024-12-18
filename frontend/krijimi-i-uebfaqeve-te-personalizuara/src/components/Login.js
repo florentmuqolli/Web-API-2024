@@ -18,6 +18,8 @@ const Login = ({ setIsAuthenticated }) => {
         setSuccessMessage('');
         setIsLoading(true);
     
+        console.log('Attempting login with:', { email, password });
+
         try {
             const response = await axios.post(
                 'http://localhost:5000/api/auth/login',

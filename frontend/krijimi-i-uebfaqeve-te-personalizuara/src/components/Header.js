@@ -55,6 +55,11 @@ const Header = ({ isAuthenticated, handleSignOut }) => {
                         </li>
                         <li className="nav-item">
                             <a className="nav-link text-light" href="#">
+                                Products
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link text-light" href="#">
                                 Features
                             </a>
                         </li>

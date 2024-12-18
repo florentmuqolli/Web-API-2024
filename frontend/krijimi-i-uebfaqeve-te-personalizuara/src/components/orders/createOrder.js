@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createOrder } from '../../api/orders';
 import './formStyles.css';
 
-const CreateOrder = ({ closeForm, onOrderCreated, setNotification }) => {
+const CreateOrderForm = ({ closeForm, onOrderCreated, setNotification }) => {
     const [userId, setUserId] = useState('');
     const [productId, setProductId] = useState('');
     const [quantity, setQuantity] = useState('');
@@ -72,4 +72,4 @@ const CreateOrder = ({ closeForm, onOrderCreated, setNotification }) => {
     );
 };
 
-export default CreateOrder;
+export default CreateOrderForm;
