@@ -28,7 +28,7 @@ const Register = () => {
             <h2 className="text-center mb-4 text-light">Register</h2>
             {error && <div className="alert alert-danger">{error}</div>}
             {success && <div className="alert alert-success">{success}</div>}
-            <form onSubmit={handleRegister} className="border p-4 rounded border-dark" style={{ background: '#151B23' }}>
+            <form onSubmit={handleRegister} className="border p-4 rounded border-dark" style={{ background: '#151B23', maxWidth: '400px', margin: '0 auto' }}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label text-light">Name</label>
                     <input

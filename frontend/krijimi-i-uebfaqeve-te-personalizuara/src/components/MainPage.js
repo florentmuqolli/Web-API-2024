@@ -1,80 +1,74 @@
-import React, { useEffect } from 'react';
+// src/MainPage.js
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './MainPage.css';
+import './MainPage.css'; // Assuming you want to style it separately
 
 const MainPage = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleExploreClick = () => {
-        navigate('/products');
-    };
+  const handleViewTemplates = () => {
+    navigate('/templates');
+  };
 
-    const handleSignUpClick = () => {
-        navigate('/register');
-    };
+  const handleGetStarted = () => {
+    navigate('/get-started');
+  };
 
-    useEffect(() => {
-        // Parallax scrolling effect
-        const parallaxElements = document.querySelectorAll('.parallax-section, .parallax-section-2');
-
-        const handleParallax = () => {
-            parallaxElements.forEach((element) => {
-                const speed = element.dataset.speed || 0.5;
-                const offset = window.pageYOffset * speed;
-                element.style.transform = `translateY(${offset}px)`;
-            });
-        };
-
-        window.addEventListener('scroll', handleParallax);
-
-        return () => {
-            window.removeEventListener('scroll', handleParallax);
-        };
-    }, []);
-
-    return (
-        <div className="main-page">
-            {/* Hero Section */}
-            <header className="hero-section parallax">
-                <h1 className="hero-title">Build Your Dream Website</h1>
-                <p className="hero-subtitle">Discover professional templates for every project.</p>
-                <div className="hero-buttons">
-                    <button className="cta-button" onClick={handleExploreClick}>
-                        Explore Templates
-                    </button>
-                    <button className="secondary-button" onClick={handleSignUpClick}>
-                        Sign Up Now
-                    </button>
-                </div>
-            </header>
-
-            {/* Parallax Section 1 */}
-            <section className="parallax-section" data-speed="0.2">
-                <h2>Customizable Templates</h2>
-            </section>
-
-            {/* Features Section */}
-            <section className="features">
-                <div className="feature">
-                    <h3>Customizable Templates</h3>
-                    <p>Choose from a variety of templates tailored to your needs.</p>
-                </div>
-                <div className="feature">
-                    <h3>Responsive Design</h3>
-                    <p>All templates are optimized for desktop, tablet, and mobile devices.</p>
-                </div>
-                <div className="feature">
-                    <h3>Easy Integration</h3>
-                    <p>Seamlessly integrate templates with your favorite tools.</p>
-                </div>
-            </section>
-
-            {/* Parallax Section 2 */}
-            <section className="parallax-section-2" data-speed="0.3">
-                <h2>Easy Integration</h2>
-            </section>
+  return (
+    <div className="main-page">
+      <section className="hero">
+        <h1>Welcome to Ueb Shërbimi</h1>
+        <p>Your go-to service for creating customized websites with ease.</p>
+        <div className="hero-actions">
+          <button className="btn-green" onClick={handleViewTemplates}>
+            View Templates
+          </button>
+          <button className="btn-green" onClick={handleGetStarted}>
+            Get Started
+          </button>
         </div>
-    );
+      </section>
+
+      <section className="features-wrapper">
+        <section className="features">
+          <h2>Features</h2>
+          <div className="feature-cards">
+            <div className="card">
+              <h3>Custom Designs</h3>
+              <p>Create websites tailored to your specific needs and preferences.</p>
+            </div>
+            <div className="card">
+              <h3>Responsive Layout</h3>
+              <p>Ensure your website looks great on any device with responsive design.</p>
+            </div>
+            <div className="card">
+              <h3>Easy-to-Use Tools</h3>
+              <p>Enjoy an intuitive interface for effortless website management.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="security">
+          <h2>Website Security</h2>
+          <p>Your website’s safety is our priority. We offer the latest security features to protect your online presence.</p>
+          <div className="security-features">
+            <div className="card">
+              <h3>SSL Encryption</h3>
+              <p>Ensure all data transferred between your website and users is encrypted with SSL certificates.</p>
+            </div>
+            <div className="card">
+              <h3>Regular Backups</h3>
+              <p>Get automated backups so you never lose your valuable data.</p>
+            </div>
+            <div className="card">
+              <h3>Secure Hosting</h3>
+              <p>Our secure hosting service provides firewalls and regular security patches.</p>
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
+  );
 };
 
 export default MainPage;

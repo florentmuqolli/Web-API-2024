@@ -1,89 +1,66 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import logo from './Designerm.png';
-import logoAlt from './Designer.png';
+import './Header.css';
+import logo from './Designer.png';
 
 const Header = ({ isAuthenticated, handleSignOut }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const navigate = useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
+  const handleLoginClick = () => {
+    navigate('/Login');
+  };
 
-    const buttonStyle = {
-        color: 'white',
-        border: isHovered ? '2px solid #238636' : '2px solid #ccc',
-        backgroundColor: isHovered ? '#238636' : 'transparent',
-    };
+  const handleRegisterClick = () => {
+    navigate('/Register');
+  };
 
-    const logoToShow = isAuthenticated ? logoAlt : logo;
+  const handleLogoutClick = () => {
+    handleSignOut();
+    navigate('/MainPage');
+  };
 
-    const isAuthPage = location.pathname === '/Login' || location.pathname === '/Register';
+  const handleBackClick = () => {
+    navigate('/MainPage');
+  };
 
-    return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-transparent d-flex justify-content-between px-5 py-3">
-            <a
-                className="navbar-brand text-light"
-                href="#"
-                onClick={() => navigate('/MainPage')}
-            >
-                <img src={logoToShow} alt="Logo" style={{ height: '80px' }} />
+  const isAuthPage = location.pathname === '/Login' || location.pathname === '/Register';
+
+  return (
+    <header className="header">
+      {isAuthPage ? (
+        <div className="back-button-container">
+          <button className="btn-green back-btn" onClick={handleBackClick}>Back</button>
+        </div>
+      ) : (
+        <>
+          <div className="logo">
+            <a href="/MainPage">
+              <img src={logo} alt="Logo" className="logo-img" height={'60px'} />
             </a>
-            {isAuthPage && (
-                <button
-                    onClick={() => navigate('/MainPage')}
-                    className="btn my-2 my-sm-0 ml-3"
-                    style={buttonStyle}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                >
-                    Back
-                </button>
+          </div>
+          <div className="nav-links">
+            <a href="/" className="nav-link">Home</a>
+            <a href="/products" className="nav-link">Products</a>
+            <a href="/pricing" className="nav-link">Pricing</a>
+            <a href="/about" className="nav-link">About</a>
+            <a href="/contact" className="nav-link">Contact</a>
+          </div>
+          <div className="auth-menu">
+            {!isAuthenticated && location.pathname !== '/Login' && location.pathname !== '/Register' && (
+              <>
+                <button className="btn-green auth-btn" onClick={handleLoginClick}>Login</button>
+                <button className="btn-green auth-btn" onClick={handleRegisterClick}>Register</button>
+              </>
             )}
-            {!isAuthPage && (
-                <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
-                    <ul className="navbar-nav">
-                        <li className="nav-item active">
-                            <a
-                                className="nav-link text-light"
-                                href="#"
-                                onClick={() => navigate('/MainPage')}
-                            >
-                                Home <span className="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link text-light" href="#">
-                                Products
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link text-light" href="#">
-                                Features
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link text-light" href="#">
-                                Pricing
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            {isAuthenticated && (
+              <button className="btn-green auth-btn" onClick={handleLogoutClick}>Logout</button>
             )}
-            {!isAuthPage && (
-                <button
-                    onClick={handleSignOut}
-                    className="btn my-2 my-sm-0 ml-3"
-                    style={buttonStyle}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                >
-                    {isAuthenticated ? 'Sign Out' : 'Login / Register'}
-                </button>
-            )}
-        </nav>
-    );
+          </div>
+        </>
+      )}
+    </header>
+  );
 };
 
 export default Header;

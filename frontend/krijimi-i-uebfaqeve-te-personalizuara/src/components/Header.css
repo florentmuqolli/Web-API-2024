@@ -1,0 +1,121 @@
+/* src/Header.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    padding: 0.5rem 2rem;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo a {
+    color: #c9d1d9;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+.search-bar input {
+    padding: 0.5rem;
+    border: 1px solid #2f81f7;
+    border-radius: 5px;
+    background-color: #161b22;
+    color: #c9d1d9;
+    width: 300px;
+}
+
+.auth-menu {
+    display: flex;
+    gap: 10px;
+}
+
+.user-menu {
+    position: relative;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.nav-link:hover {
+    color: #238636;
+}
+
+.btn-green {
+    background-color: #238636;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-green:hover {
+    background-color: #45a049;
+}
+
+.back-btn {
+    background-color: #238636;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #45a049;
+}
+
+.auth-btn {
+    background-color: #238636;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-btn:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .search-bar input {
+        width: 200px;
+    }
+
+    .auth-btn {
+        font-size: 0.9rem;
+    }
+
+    .logo a {
+        font-size: 1.2rem;
+    }
+}
+
+/* Additional Styles for Authenticated User */
+.auth-menu .auth-btn {
+    display: none; /* Hide login/register buttons if authenticated */
+}
+
+.auth-menu .btn-green {
+    display: block; 
+}

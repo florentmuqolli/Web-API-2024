@@ -55,7 +55,7 @@ const Login = ({ setIsAuthenticated }) => {
             <h2 className="text-center mb-4 text-light">Login</h2>
             {error && <div className="alert alert-danger">{error}</div>}
             {success && <div className="alert alert-success">{success}</div>}
-            <form onSubmit={handleLogin} className="border p-4 rounded border-dark" style={{ background: '#151B23' }}>
+            <form onSubmit={handleLogin} className="border p-4 rounded border-dark" style={{ background: '#151B23', maxWidth: '400px', margin: '0 auto' }}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label text-light">Email</label>
                     <input
