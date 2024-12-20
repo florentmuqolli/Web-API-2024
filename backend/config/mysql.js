@@ -1,26 +1,40 @@
 require('dotenv').config();
-
 const mysql = require('mysql2/promise');
+
+const pool = mysql.createPool({
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    waitForConnections: true,
+    connectionLimit: 10, 
+    queueLimit: 0
+});
 
 const connectMySQL = async () => {
     try {
-        console.log('MYSQL_HOST:', process.env.MYSQL_HOST);
-        console.log('MYSQL_USER:', process.env.MYSQL_USER);
-        console.log('MYSQL_PASSWORD:', process.env.MYSQL_PASSWORD);
-        console.log('MYSQL_DATABASE:', process.env.MYSQL_DATABASE);
-
-        const connection = await mysql.createConnection({
-            host: process.env.MYSQL_HOST,
-            user: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
-            database: process.env.MYSQL_DATABASE,
-        });
-        console.log('MySQL connected');
-        return connection;
+        // Test connection
+        const [rows] = await pool.query('SELECT 1');
+        console.log('MySQL pool connected');
+        return pool; 
     } catch (error) {
-        console.error('MySQL connection error:', error.message);
+        console.error('MySQL pool connection error:', error.message);
         process.exit(1);
     }
 };
 
-module.exports = connectMySQL;
+const closePool = () => {
+    pool.end((err) => {
+        if (err) {
+            console.error('Error closing pool:', err);
+        } else {
+            console.log('MySQL connection pool closed.');
+        }
+    });
+};
+
+module.exports = {
+    pool,
+    connectMySQL,
+    closePool
+};

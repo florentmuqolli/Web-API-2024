@@ -1,4 +1,3 @@
-/* src/MainPage.css */
 .main-page {
   padding: 2rem;
   background-color: #151B23;
@@ -98,7 +97,6 @@
   }
 }
 
-/* Parallax effect for features */
 .features-wrapper {
   position: relative;
   overflow: hidden;
@@ -111,5 +109,5 @@
 }
 
 .features-wrapper:hover .features {
-  transform: translateY(-30px); /* Moves the features section upwards */
+  transform: translateY(-30px); 
 }

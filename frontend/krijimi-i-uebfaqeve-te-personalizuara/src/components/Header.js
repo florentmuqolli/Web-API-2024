@@ -40,11 +40,11 @@ const Header = ({ isAuthenticated, handleSignOut }) => {
             </a>
           </div>
           <div className="nav-links">
-            <a href="/" className="nav-link">Home</a>
-            <a href="/products" className="nav-link">Products</a>
+            <a href="/MainPage" className="nav-link">Home</a>
+            <a href="/templates" className="nav-link">Products</a>
             <a href="/pricing" className="nav-link">Pricing</a>
             <a href="/about" className="nav-link">About</a>
-            <a href="/contact" className="nav-link">Contact</a>
+            <a href="/contact" className="nav-link">Get in touch</a>
           </div>
           <div className="auth-menu">
             {!isAuthenticated && location.pathname !== '/Login' && location.pathname !== '/Register' && (

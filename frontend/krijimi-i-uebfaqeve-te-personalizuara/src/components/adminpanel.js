@@ -4,6 +4,7 @@ import OrdersCRUD from "./orders/ordersCrud";
 import ProductsCRUD from "./products/prodCrud"; 
 import UsersCRUD from "./users/usersCrud"; 
 import EmployeesCRUD from "./employees/empCrud"; 
+import MainPage from "./MainPage";
 import "./adminpanel.css";
 import Cookies from 'js-cookie'; 
 import { jwtDecode } from 'jwt-decode';
@@ -86,6 +87,7 @@ const AdminPanel = () => {
           <li onClick={() => setActiveComponent("products")}>Products Management</li>
           <li onClick={() => setActiveComponent("users")}>Users Management</li>
           <li onClick={() => setActiveComponent("employees")}>Employees Management</li>
+          <li onClick={() => setActiveComponent("mainpage")}>View MainPage</li>
           <li>
             <button onClick={handleSignOut} className="btn btn-danger">
               Sign Out
@@ -98,6 +100,7 @@ const AdminPanel = () => {
         {activeComponent === "products" && <ProductsCRUD />}
         {activeComponent === "users" && <UsersCRUD />}
         {activeComponent === "employees" && <EmployeesCRUD />}
+        {activeComponent === "mainpage" && <MainPage />}
       </main>
     </div>
   );

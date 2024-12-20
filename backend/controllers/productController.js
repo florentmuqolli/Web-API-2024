@@ -1,4 +1,4 @@
-const connectMySQL = require('../config/mysql');
+const { pool } = require('../config/mysql');
 const multer = require('multer');
 const path = require('path');
 
@@ -22,9 +22,8 @@ exports.createProduct = async (req, res) => {
         const imageURL = req.file ? `/uploads/${req.file.filename}` : null;
 
         try {
-            const connection = await connectMySQL();  // Wait for the connection
-            const sql = "INSERT INTO products (productName, description, price, category, imageURL) VALUES (?, ?, ?, ?, ?)";
-            const [result] = await connection.execute(sql, [productName, description, price, category, imageURL]);
+            const [result] = await pool.execute("INSERT INTO products (productName, description, price, category, imageURL) VALUES (?, ?, ?, ?, ?)", 
+            [productName, description, price, category, imageURL]);
             res.status(201).json({ message: "Product added successfully", productID: result.insertId });
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -34,9 +33,7 @@ exports.createProduct = async (req, res) => {
 
 exports.getAllProducts = async (req, res) => {
     try {
-        const connection = await connectMySQL(); 
-        const sql = "SELECT * FROM products";
-        const [results] = await connection.execute(sql);
+        const [results] = await pool.execute("SELECT * FROM products");
         res.json(results);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -45,9 +42,7 @@ exports.getAllProducts = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
     try {
-        const connection = await connectMySQL(); 
-        const sql = "SELECT * FROM products WHERE productID = ?";
-        const [result] = await connection.execute(sql, [req.params.id]);
+        const [result] = await pool.execute("SELECT * FROM products WHERE productID = ?", [req.params.id]);
 
         if (result.length === 0) return res.status(404).json({ message: "Product not found" });
         res.json(result[0]);
@@ -64,15 +59,11 @@ exports.updateProduct = async (req, res) => {
         }
 
         const { productName, description, price, category } = req.body;
-        const imageURL = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl; 
-
-        console.log('Updating product with ID:', req.params.id);
-        console.log('Product data:', { productName, description, price, category, imageURL });
+        const imageURL = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
 
         try {
-            const connection = await connectMySQL();
-            const sql = "UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ? WHERE productID = ?";
-            const [result] = await connection.execute(sql, [productName, description, price, category, imageURL, req.params.id]);
+            const [result] = await pool.execute("UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ? WHERE productID = ?", 
+                                                [productName, description, price, category, imageURL, req.params.id]);
 
             if (result.affectedRows === 0) return res.status(404).json({ message: "Product not found" });
             res.json({ message: "Product updated successfully" });
@@ -83,12 +74,9 @@ exports.updateProduct = async (req, res) => {
     });
 };
 
-
 exports.deleteProduct = async (req, res) => {
     try {
-        const connection = await connectMySQL(); 
-        const sql = "DELETE FROM products WHERE productID = ?";
-        const [result] = await connection.execute(sql, [req.params.id]);
+        const [result] = await pool.execute("DELETE FROM products WHERE productID = ?", [req.params.id]);
 
         if (result.affectedRows === 0) return res.status(404).json({ message: "Product not found" });
         res.json({ message: "Product deleted successfully" });

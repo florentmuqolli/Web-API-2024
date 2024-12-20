@@ -111,9 +111,8 @@
     }
 }
 
-/* Additional Styles for Authenticated User */
 .auth-menu .auth-btn {
-    display: none; /* Hide login/register buttons if authenticated */
+    display: none; 
 }
 
 .auth-menu .btn-green {

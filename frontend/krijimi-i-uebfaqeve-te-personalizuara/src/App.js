@@ -6,6 +6,8 @@ import Register from './components/Register';
 import Login from './components/Login';
 import MainPage from './components/MainPage';
 import AdminTools from './components/adminpanel';
+import ProductsPage from './components/ProductsPage';
+import ContactPage from './components/ContactPage';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -65,15 +67,23 @@ const App = () => {
     };
 
     useEffect(() => {
-        if (isAuthenticated && userRole) {
-            console.log(`Authenticated: ${isAuthenticated}, Role: ${userRole}`);
-            if (userRole === 'admin' || userRole === 'employee') {
-                navigate('/adminpanel');
-            } else {
-                navigate('/MainPage');
+        const handleRedirection = () => {
+            if (isAuthenticated && userRole) {
+                console.log(`Authenticated: ${isAuthenticated}, Role: ${userRole}`);
+                if (location.pathname === '/' || location.pathname === '/Login' || location.pathname === '/Register') {
+                    // Redirect only if on the initial or auth pages
+                    if (userRole === 'admin' || userRole === 'employee') {
+                        navigate('/adminpanel');
+                    } else {
+                        navigate('/MainPage');
+                    }
+                }
             }
-        }
-    }, [isAuthenticated, userRole, navigate]);
+        };
+    
+        handleRedirection();
+    }, [isAuthenticated, userRole, navigate, location.pathname]);
+    
 
     return (
         <div className={getBackgroundClass()}>
@@ -94,6 +104,8 @@ const App = () => {
                     path="/Register"
                     element={<Register />}
                 />
+                <Route path="/templates" element={<ProductsPage />}/>
+                <Route path="/contact" element={<ContactPage />}/>
                 <Route
                     path="/"
                     element={isAuthenticated ? (

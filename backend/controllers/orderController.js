@@ -1,9 +1,8 @@
-const connectMySQL = require('../config/mysql');
+const { pool } = require('../config/mysql');
 const User = require('../models/user');
 
 exports.createOrder = async (req, res) => {
     try {
-        const connection = await connectMySQL();
         const { userId, productId, quantity, totalPrice } = req.body;
 
         const user = await User.findById(userId);
@@ -18,7 +17,7 @@ exports.createOrder = async (req, res) => {
             return res.status(400).json({ message: 'Missing required fields' });
         }
 
-        const [result] = await connection.execute(
+        const [result] = await pool.execute(
             'INSERT INTO orders (user_id, product_id, quantity, total_price) VALUES (?, ?, ?, ?)',
             [userId, productId, quantity, totalPrice]
         );
@@ -33,8 +32,7 @@ exports.createOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
     try {
-        const connection = await connectMySQL();
-        const [orders] = await connection.execute('SELECT id, user_id, product_id, quantity, total_price FROM orders');
+        const [orders] = await pool.execute('SELECT id, user_id, product_id, quantity, total_price FROM orders');
         console.log('Fetched Orders:', orders);
         res.status(200).json(orders);
     } catch (error) {
@@ -48,8 +46,7 @@ exports.updateOrder = async (req, res) => {
         const { id } = req.params;
         const { productId, quantity, totalPrice } = req.body;
 
-        const connection = await connectMySQL();
-        const [result] = await connection.execute(
+        const [result] = await pool.execute(
             'UPDATE orders SET product_id = ?, quantity = ?, total_price = ? WHERE id = ?',
             [productId, quantity, totalPrice, id]
         );
@@ -69,15 +66,13 @@ exports.deleteOrder = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const connection = await connectMySQL();
-
-        const [order] = await connection.execute('SELECT * FROM orders WHERE id = ?', [id]);
+        const [order] = await pool.execute('SELECT * FROM orders WHERE id = ?', [id]);
 
         if (order.length === 0) {
             return res.status(404).json({ message: 'Order not found' });
         }
 
-        const [result] = await connection.execute('DELETE FROM orders WHERE id = ?', [id]);
+        const [result] = await pool.execute('DELETE FROM orders WHERE id = ?', [id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Failed to delete order' });
@@ -89,4 +84,3 @@ exports.deleteOrder = async (req, res) => {
         res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 };
-

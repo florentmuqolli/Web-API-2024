@@ -1,0 +1,62 @@
+.container {
+    padding-bottom: 80px; 
+}
+
+.contact-details-card {
+    position: relative;
+    padding: 20px;
+    border-radius: 8px;
+    background: #151B23;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.contact-details-card::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: -1;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #238636, #52b788, #238636);
+    animation: rotateBorder 4s linear infinite;
+    background-size: 400% 400%; /* This will make the gradient move smoothly */
+}
+
+@keyframes rotateBorder {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.glowing-form {
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 10px;
+    background-image: linear-gradient(to right, #238636, #238636);
+    background-size: 100% 100%;
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    box-shadow: 0 0 15px rgba(35, 134, 54, 0.8);
+    animation: glow-animation 2s ease-in-out infinite;
+}
+
+@keyframes glow-animation {
+    0% {
+        border-color: #238636;
+    }
+    50% {
+        border-color: #52b788;
+    }
+    100% {
+        border-color: #238636;
+    }
+}
