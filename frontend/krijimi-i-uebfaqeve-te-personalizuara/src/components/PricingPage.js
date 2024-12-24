@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './PricingPage.css';
 
 const PricingPage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const openModal = () => {
+    console.log('Opening modal');
+    setShowModal(true);
+  };
+  
+
+  const handleProceed = (e) => {
+    e.preventDefault();
+    console.log('Proceed button clicked');
+    setIsSubmitted(true);
+  };
+  
+  const handleCloseModal = () => {
+    console.log('Close button clicked');
+    setShowModal(false);
+  };
+  
+
   const plans = [
     {
       name: 'Basic Plan',
@@ -40,7 +61,7 @@ const PricingPage = () => {
   ];
 
   return (
-    <div className="pricing-container">
+    <div className={`pricing-container ${showModal ? 'blurred' : ''}`}>
       <div className="gradient-wave wave-top"></div>
       <div className="gradient-wave wave-bottom"></div>
       <div className="glowing-orb orb-1"></div>
@@ -63,10 +84,46 @@ const PricingPage = () => {
                 </li>
               ))}
             </ul>
-            <button className="choose-plan-btn">Choose Plan</button>
+            <button
+              className="choose-plan-btn"
+              onClick={openModal}
+            >
+              Choose Plan
+            </button>
           </div>
         ))}
       </div>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            {isSubmitted ? (
+              <div className="confirmation-message">
+                <p>Email has been sent! 🎉</p>
+                <p>Check your inbox for further instructions. Enjoy your plan!</p>
+              </div>
+            ) : (
+              <form onSubmit={handleProceed}>
+                <h2>Complete Your Plan</h2>
+                <label>
+                  Full Name:
+                  <input type="text" required />
+                </label>
+                <label>
+                  Email:
+                  <input type="email" required />
+                </label>
+                <button type="submit" className="proceed-btn">
+                  Proceed
+                </button>
+              </form>
+            )}
+            <button className="close-btn" onClick={handleCloseModal}>
+              ✖
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
