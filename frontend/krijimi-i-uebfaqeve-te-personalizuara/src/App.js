@@ -9,6 +9,7 @@ import AdminTools from './components/adminpanel';
 import ProductsPage from './components/ProductsPage';
 import ContactPage from './components/ContactPage';
 import PricingPage from './components/PricingPage';
+import AboutPage from './components/AboutPage';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -108,6 +109,7 @@ const App = () => {
                 <Route path="/templates" element={<ProductsPage />}/>
                 <Route path="/contact" element={<ContactPage />}/>
                 <Route path="/pricing" element={<PricingPage />}/>
+                <Route path="/about" element={<AboutPage />}/>
                 <Route
                     path="/"
                     element={isAuthenticated ? (

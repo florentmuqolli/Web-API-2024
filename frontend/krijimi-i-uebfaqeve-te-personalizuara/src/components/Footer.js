@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="footer-links">
           <ul>
             <li><a href="#home" onClick={() => handleNavigation('/MainPage')}>Home</a></li>
-            <li><a href="#products" onClick={() => handleNavigation('/products')}>Products</a></li>
+            <li><a href="#products" onClick={() => handleNavigation('/templates')}>Products</a></li>
             <li><a href="#pricing" onClick={() => handleNavigation('/pricing')}>Pricing</a></li>
             <li><a href="#about" onClick={() => handleNavigation('/about')}>About</a></li>
             <li><a href="#contact" onClick={() => handleNavigation('/contact')}>Contact</a></li>
