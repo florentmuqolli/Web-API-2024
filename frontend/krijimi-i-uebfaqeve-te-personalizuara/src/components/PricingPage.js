@@ -2,26 +2,11 @@ import React, { useState } from 'react';
 import './PricingPage.css';
 
 const PricingPage = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const openModal = () => {
-    console.log('Opening modal');
-    setShowModal(true);
-  };
-  
-
-  const handleProceed = (e) => {
-    e.preventDefault();
-    console.log('Proceed button clicked');
-    setIsSubmitted(true);
-  };
-  
-  const handleCloseModal = () => {
-    console.log('Close button clicked');
-    setShowModal(false);
-  };
-  
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [formVisible, setFormVisible] = useState(false);
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const plans = [
     {
@@ -60,8 +45,28 @@ const PricingPage = () => {
     },
   ];
 
+  const handleChoosePlan = (plan) => {
+    setSelectedPlan(plan);
+    setFormVisible(true);
+  };
+
+  const handleCloseForm = () => {
+    setFormVisible(false);
+    setFullName('');
+    setEmail('');
+    setSuccessMessage('');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSuccessMessage('Email has been sent! Check your inbox for further instructions. Enjoy your plan!');
+    setFullName('');
+    setEmail('');
+    setFormVisible(false);
+  };
+
   return (
-    <div className={`pricing-container ${showModal ? 'blurred' : ''}`}>
+    <div className="pricing-container">
       <div className="gradient-wave wave-top"></div>
       <div className="gradient-wave wave-bottom"></div>
       <div className="glowing-orb orb-1"></div>
@@ -84,43 +89,34 @@ const PricingPage = () => {
                 </li>
               ))}
             </ul>
-            <button
-              className="choose-plan-btn"
-              onClick={openModal}
-            >
-              Choose Plan
-            </button>
+            <button className="choose-plan-btn" onClick={() => handleChoosePlan(plan)}>Choose Plan</button>
           </div>
         ))}
       </div>
 
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            {isSubmitted ? (
-              <div className="confirmation-message">
-                <p>Email has been sent! 🎉</p>
-                <p>Check your inbox for further instructions. Enjoy your plan!</p>
-              </div>
-            ) : (
-              <form onSubmit={handleProceed}>
-                <h2>Complete Your Plan</h2>
-                <label>
-                  Full Name:
-                  <input type="text" required />
-                </label>
-                <label>
-                  Email:
-                  <input type="email" required />
-                </label>
-                <button type="submit" className="proceed-btn">
-                  Proceed
-                </button>
-              </form>
-            )}
-            <button className="close-btn" onClick={handleCloseModal}>
-              ✖
-            </button>
+      {formVisible && (
+        <div className="form-overlay">
+          <div className="form-container">
+            <button className="close-btn" onClick={handleCloseForm}>✖️</button>
+            <h2>Sign Up for {selectedPlan.name}</h2>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button type="submit" className="proceed-btn">Proceed</button>
+            </form>
+            {successMessage && <p className="success-message">{successMessage}</p>}
           </div>
         </div>
       )}
