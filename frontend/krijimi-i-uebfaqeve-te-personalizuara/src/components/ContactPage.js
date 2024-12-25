@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ContactPage.css';
 
 const Contact = () => {
@@ -19,6 +19,26 @@ const Contact = () => {
             [name]: value,
         }));
     };
+
+    useEffect(() => {
+        console.log("Adding stars...");
+        const starContainer = document.querySelector('.stars');
+        if (!starContainer) {
+            console.error("Star container not found!");
+            return;
+        }
+    
+        const totalStars = 75;
+        for (let i = 0; i < totalStars; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.top = `${Math.random() * 100}%`;
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.animationDelay = `${Math.random() * 3}s`;
+          starContainer.appendChild(star);
+        }
+        console.log(`${totalStars} stars added successfully!`);
+      }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -44,6 +64,7 @@ const Contact = () => {
 
     return (
         <div className="container mt-4">
+            <div className="stars"></div>
             <div className="row">
                 <div className="col-md-6">
                     <h2 className="text-center mb-4 text-light">Contact Us</h2>
@@ -52,7 +73,6 @@ const Contact = () => {
                     <form
                         onSubmit={handleSubmit}
                         className="glowing-form border p-4 rounded border-dark"
-                        style={{ background: '#151B23' }}
                     >
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label text-light">Name</label>
@@ -109,7 +129,7 @@ const Contact = () => {
                         <button
                             type="submit"
                             className="btn text-light w-100"
-                            style={{ background: '#238636' }}
+                            style={{ background: '#0D1117' }}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Sending...' : 'Send Message'}
