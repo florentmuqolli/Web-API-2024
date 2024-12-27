@@ -8,7 +8,7 @@ export const createUser = async (userData) => {
         return { message: 'Authentication required' };
     }
     try {
-        const response = await axios.post('http://localhost:5000/api/users', userData, {
+        const response = await axios.post('http://localhost:5000/api/auth/register', userData, {
             headers: { Authorization: `Bearer ${token}` },
         });
         console.log('User created:', response.data);
@@ -26,7 +26,7 @@ export const getUser = async () => {
         return [];
     }
     try {
-        const response = await axios.get('http://localhost:5000/api/users', {
+        const response = await axios.get('http://localhost:5000/api/auth', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -46,7 +46,7 @@ export const updateUser = async (id, userData) => {
         return { message: 'Authentication required' };
     }
     try {
-        const response = await axios.put(`http://localhost:5000/api/users/${id}`, userData, {
+        const response = await axios.put(`http://localhost:5000/api/auth/${id}`, userData, {
             headers: { Authorization: `Bearer ${token}` },
         });
         console.log('User updated:', response.data);
@@ -65,7 +65,7 @@ export const deleteUser = async (id) => {
         return { message: 'Authentication required' };
     }
     try {
-        const response = await axios.delete(`http://localhost:5000/api/users/${id}`, {
+        const response = await axios.delete(`http://localhost:5000/api/auth/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         console.log('User deleted:', response.data);

@@ -29,10 +29,7 @@ const Login = ({ setIsAuthenticated }) => {
     
             Cookies.set('authToken', response.data.accessToken, { expires: 1 });
             Cookies.set('userRole', response.data.userRole, { expires: 1 });
-            //console.log('Login response:', response.data);
-
-            //console.log('accessToken:', response.data.accessToken);
-            //console.log('userRole:', response.data.userRole);
+            console.log('Login response:', response.data);
 
 
             setUserRole(response.data.userRole);

@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const orderRoutes = require('./routes/orderRoutes');
-const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const User = require('../backend/models/user');
 const authMiddleware = require('../backend/middleware/authMiddleware');
@@ -39,19 +38,6 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use("/api/products", productRoutes);
-app.get('/api/users', authMiddleware, async (req, res) => {
-    console.log('GET /api/users called');
-    try {
-        const users = await User.find(); 
-        console.log('Fetched users:', users);
-        res.json(users);
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).json({ message: 'Failed to fetch users' });
-    }
-});
-
-
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB connected'))

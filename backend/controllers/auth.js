@@ -2,23 +2,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
-const verifyToken = (req, res, next) => {
-    const token = req.cookies.authToken;
-
-    if (!token) {
-        return res.status(403).json({ message: 'No token provided' });
-    }
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('Token from cookies:', req.cookies.authToken);
-        req.user = decoded; 
-        next();
-    } catch (error) {
-        return res.status(403).json({ message: 'Invalid or expired token' });
-    }
-};
-
 const registerUser = async (req, res) => {
     console.log("Request Body:", req.body);
     const { name, password, email, role } = req.body;
@@ -61,36 +44,39 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
         console.log('User found:', user);
         if (!user) {
+            console.log('User  does not exist:', email);
             return res.status(400).json({ message: 'User does not exist' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
+            console.log('Incorrect password for user:', email);
             return res.status(400).json({ message: 'Incorrect password' });
         }
 
         const accessToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '15m' });
+        console.log('Access token generated:', accessToken);
+
         if (!process.env.JWT_SECRET) {
             console.error('JWT_SECRET not configured in environment variables');
         }
-        
-
         console.log('Setting Cookie:', { token: accessToken });
 
         res.cookie('authToken', accessToken, {
             secure: false, 
-            sameSite: 'lax', 
-            maxAge: 3600000, 
+            sameSite: 'none', 
+            maxAge: 3600000,
+            path: '/' 
         });
 
         res.cookie('userRole', user.role, {
             secure: false,
-            sameSite: 'Lax',
-            maxAge: 3600000, 
+            sameSite: 'none',
+            maxAge: 3600000,
+            path: '/' 
         });
 
-        console.log('Token Set:', accessToken);
-
+        console.log('Cookies set:', { authToken: accessToken, userRole: user.role });
         res.status(200).json({ message: 'Login successful',accessToken, userRole: user.role });
 
     } catch (error) {
@@ -99,10 +85,61 @@ const loginUser = async (req, res) => {
     }
 };
 
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ message: 'Error fetching users' });
+    }
+};
+
+
+const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { name, email, role } = req.body;
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            { name, email, role },
+            { new: true, runValidators: true } 
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Failed to update user', error: error.message });
+    }
+};
+
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedUser = await User.findByIdAndDelete(id);
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully', user: deletedUser });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Failed to delete user', error: error.message });
+    }
+};
+
 const getStatus = (req, res) => {
     const authToken = req.cookies.authToken;
 
     if (!authToken) {
+        console.log('ska token');
         return res.status(401).json({ authenticated: false, message: 'No token found' });
     }
 
@@ -118,4 +155,11 @@ const getStatus = (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, verifyToken, getStatus };
+module.exports = {
+    registerUser,
+    loginUser,
+    getStatus,
+    getUsers,
+    updateUser,
+    deleteUser,
+};

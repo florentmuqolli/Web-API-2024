@@ -63,6 +63,7 @@ const AdminPanel = () => {
     try {
       await axios.post('http://localhost:5000/api/auth/logout'); 
       Cookies.remove('authToken');
+      Cookies.remove('userRole');
       window.location.href = '/Login';
     } catch (error) {
       console.error('Logout failed:', error);

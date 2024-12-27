@@ -49,7 +49,7 @@ const ProductsPage = () => {
   };
 
   const handleAddProduct = () => {
-    navigate('/adminpanel'); // Redirect to the Admin Panel
+    navigate('/adminpanel'); 
   };
 
   return (
@@ -69,7 +69,6 @@ const ProductsPage = () => {
         ))}
       </div>
 
-      {/* Modal for detailed view */}
       {modalVisible && selectedProduct && (
         <div className="modal-overlay">
           <div className="modal-content">

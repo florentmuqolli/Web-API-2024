@@ -1,24 +1,25 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1];
-    
-    console.log('Auth Middleware called');
-    
-    if (!token) {
-        return res.status(401).json({ message: 'Token nuk është i dhënë' });
-    }
+    let token = req.cookies.authToken || req.headers['authorization']?.split(' ')[1];
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; 
-        console.log('Token decoded:', req.user);
-        next(); 
-    } catch (error) {
-        if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({ message: 'Tokeni ka skaduar, identifikohuni prapë' });
+    console.log('authMiddleware called');
+    
+        if (!token) {
+            console.log('Token nuk është i dhënë');
+            return res.status(403).json({ message: 'No token provided' });
         }
-        return res.status(403).json({ message: 'Token i pavlefshëm' });
+    
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            console.log('Token decoded:', decoded);
+            req.user = decoded; 
+            next();
+        } catch (error) {
+            if (error.name === 'TokenExpiredError') {
+                return res.status(401).json({ message: 'Tokeni ka skaduar, identifikohuni prapë' });
+            }
+            return res.status(403).json({ message: 'Token i pavlefshëm' });
     }
 };
 
