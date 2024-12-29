@@ -12,7 +12,9 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/products/${productID}`);
+                const response = await axios.get(`http://localhost:5000/api/products/${productID}`, {
+                    withCredentials: true,
+                });
                 if (response.data) {
                     setProductName(response.data.productName || '');
                     setDescription(response.data.description || '');
@@ -42,6 +44,7 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
             const response = await fetch(`http://localhost:5000/api/products/${productID}`, {
                 method: 'PUT',
                 body: formData,
+                credentials: 'include',
             });
 
             const result = await response.json();

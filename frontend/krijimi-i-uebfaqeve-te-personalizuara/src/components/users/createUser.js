@@ -10,7 +10,7 @@ const CreateUserForm = ({ closeForm, onUserCreated, setNotification }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userData = { name, password, email, role };
+        const userData = { name, password, email, role, credentials: 'include' };
         const response = await createUser(userData);
         if (response.message) {
             setNotification({ message: response.message, type: 'success', visible: true });

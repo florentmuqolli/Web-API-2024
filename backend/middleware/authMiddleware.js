@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
-    let token = req.cookies.authToken || req.headers['authorization']?.split(' ')[1];
+    const token = req.cookies.authToken;
 
-    console.log('authMiddleware called');
-    
+    //console.log('authMiddleware called');
+    //console.log('Token from cookies:', req.cookies.authToken);
         if (!token) {
             console.log('Token nuk është i dhënë');
             return res.status(403).json({ message: 'No token provided' });
@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
     
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            console.log('Token decoded:', decoded);
+            //console.log('Token decoded:', decoded);
             req.user = decoded; 
             next();
         } catch (error) {

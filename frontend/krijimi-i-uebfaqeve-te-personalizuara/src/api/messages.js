@@ -9,7 +9,7 @@ export const createMessage = async (messageData) => {
     }
     try {
         const response = await axios.post('http://localhost:5000/api/messages', messageData, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {
@@ -26,7 +26,7 @@ export const getMessages = async () => {
     }
     try {
         const response = await axios.get('http://localhost:5000/api/messages', {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
 
         if (response.data.success) {
@@ -49,11 +49,9 @@ export const markAsDone = async (id) => {
     }
   
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/messages/${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await axios.put(`http://localhost:5000/api/messages/${id}`,{},{ 
+            withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error marking message as done:', error);
@@ -69,7 +67,7 @@ export const updateMessage = async (id, messageData) => {
     }
     try {
         const response = await axios.put(`http://localhost:5000/api/messages/${id}`, messageData, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {
@@ -86,7 +84,7 @@ export const deleteMessage = async (id) => {
     }
     try {
         const response = await axios.delete(`http://localhost:5000/api/messages/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {

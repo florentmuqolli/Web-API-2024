@@ -9,7 +9,7 @@ export const createProduct = async (productData) => {
     }
     try {
         const response = await axios.post('http://localhost:5000/api/products', productData, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         console.log('Product created successfully:', response.data);
         return response.data;
@@ -27,12 +27,30 @@ export const getProducts = async () => {
     }
     try {
         const response = await axios.get('http://localhost:5000/api/products', {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         console.log('Fetched Products from API:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error fetching products:', error);
+        return [];
+    }
+};
+
+export const getProductById = async (id, productData) => {
+    const token = Cookies.get('authToken');
+    if (!token) {
+        console.error('No token found, please log in.');
+        return;
+    }
+    try {
+        const response = await axios.get(`http://localhost:5000/api/products/${id}`, productData, {
+            withCredentials: true,
+        });
+        console.log('Fetched product from API:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching product:', error);
         return [];
     }
 };
@@ -45,7 +63,7 @@ export const updateProduct = async (id, productData) => {
     }
     try {
         const response = await axios.put(`http://localhost:5000/api/products/${id}`, productData, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {
@@ -62,7 +80,7 @@ export const deleteProduct = async (id) => {
     }
     try {
         const response = await axios.delete(`http://localhost:5000/api/products/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {

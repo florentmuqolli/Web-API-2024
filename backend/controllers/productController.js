@@ -13,7 +13,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Create Product
 exports.createProduct = async (req, res) => {
     upload.single('image')(req, res, async (err) => {
         if (err) return res.status(500).json({ error: 'File upload failed' });

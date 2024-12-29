@@ -20,6 +20,7 @@ const CreateProductForm = ({ closeForm, onProductCreated, setNotification }) => 
         const response = await fetch('http://localhost:5000/api/products', {
             method: 'POST',
             body: formData,
+            credentials: 'include',
         });
     
         const result = await response.json();

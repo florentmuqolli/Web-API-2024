@@ -9,13 +9,8 @@ const productRoutes = require('./routes/productRoutes');
 const ContactRoutes = require('./routes/ContactRoutes');
 const User = require('../backend/models/user');
 const authMiddleware = require('../backend/middleware/authMiddleware');
-
-dotenv.config();
-
 const app = express();
-
 const PORT = process.env.PORT || 5000;
-
 const corsOptions = {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -23,19 +18,16 @@ const corsOptions = {
     credentials: true, 
 };
 
-app.use(cors(corsOptions));
+dotenv.config();
 
 app.use(cookieParser());
-
 app.use(express.json());
-
+app.use(cors(corsOptions));
 app.use('/uploads', express.static('uploads'));
-
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
-
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use("/api/products", productRoutes);

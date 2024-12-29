@@ -9,7 +9,7 @@ export const createUser = async (userData) => {
     }
     try {
         const response = await axios.post('http://localhost:5000/api/auth/register', userData, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         console.log('User created:', response.data);
         return response.data;
@@ -27,9 +27,7 @@ export const getUser = async () => {
     }
     try {
         const response = await axios.get('http://localhost:5000/api/auth', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true,
         });
         console.log('Fetched users from API:', response.data); 
         return Array.isArray(response.data) ? response.data : [];
@@ -47,7 +45,7 @@ export const updateUser = async (id, userData) => {
     }
     try {
         const response = await axios.put(`http://localhost:5000/api/auth/${id}`, userData, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         console.log('User updated:', response.data);
         return response.data;
@@ -66,7 +64,7 @@ export const deleteUser = async (id) => {
     }
     try {
         const response = await axios.delete(`http://localhost:5000/api/auth/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
         });
         console.log('User deleted:', response.data);
         return response.data;

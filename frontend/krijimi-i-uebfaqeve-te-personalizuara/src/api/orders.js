@@ -10,10 +10,8 @@ export const getOrders = async () => {
     }
     try {
         const response = await axios.get('http://localhost:5000/api/orders',{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },}
-        );
+            withCredentials: true,
+        });
         console.log('Fetched Orders from API:', response.data);
         return response.data;
     } catch (error) {
@@ -31,9 +29,7 @@ export const createOrder = async (orderData) => {
     }
     try {
         const response = await axios.post('http://localhost:5000/api/orders', orderData, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true,
         });
         console.log('Order created successfully:', response.data);
         return response.data;  
@@ -53,9 +49,7 @@ export const updateOrder = async (id, orderData) => {
     }
     try {
         const response = await axios.put(`http://localhost:5000/api/orders/${id}`, orderData,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {
@@ -73,9 +67,7 @@ export const deleteOrder = async (id) => {
     }
     try {
         const response = await axios.delete(`http://localhost:5000/api/orders/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true,
         });
         return response.data; 
     } catch (error) {

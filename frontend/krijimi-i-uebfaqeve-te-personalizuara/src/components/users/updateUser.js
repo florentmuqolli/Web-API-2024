@@ -21,7 +21,7 @@ const UpdateUserForm = ({ userId, closeForm, onUserUpdated, setNotification }) =
 
     const handleSubmit = async (e) => {
             e.preventDefault();
-            const userData = { name, email, role };
+            const userData = { name, email, role, credentials: 'include' };
             const response = await updateUser(userId, userData);
             if (response.message) {
                 setNotification({ message: response.message, type: 'success', visible: true });

@@ -10,7 +10,7 @@ const CreateOrderForm = ({ closeForm, onOrderCreated, setNotification }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const orderData = {userId, productId, quantity, totalPrice };
+        const orderData = {userId, productId, quantity, totalPrice, credentials: 'include' };
         const response = await createOrder(orderData);
         if (response.message) {
             setNotification({ message: response.message, type: 'success', visible: true });

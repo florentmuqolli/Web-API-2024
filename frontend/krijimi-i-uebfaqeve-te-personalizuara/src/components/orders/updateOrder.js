@@ -21,7 +21,7 @@ const UpdateOrderForm = ({ orderId, closeForm, onOrderUpdated, setNotification }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const orderData = { productId, quantity, totalPrice };
+        const orderData = { productId, quantity, totalPrice, credentials: 'include' };
         const response = await updateOrder(orderId, orderData);
         if (response.message) {
             setNotification({ message: response.message, type: 'success', visible: true });
