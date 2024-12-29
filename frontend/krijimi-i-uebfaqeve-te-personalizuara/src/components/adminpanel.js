@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import OrdersCRUD from "./orders/ordersCrud"; 
 import ProductsCRUD from "./products/prodCrud"; 
 import UsersCRUD from "./users/usersCrud"; 
-import EmployeesCRUD from "./employees/empCrud"; 
+import ContactCrud from "./contact/contactCrud"; 
 import MainPage from "./MainPage";
 import "./adminpanel.css";
 import Cookies from 'js-cookie'; 
@@ -87,7 +87,7 @@ const AdminPanel = () => {
           <li onClick={() => setActiveComponent("orders")}>Orders Management</li>
           <li onClick={() => setActiveComponent("products")}>Products Management</li>
           <li onClick={() => setActiveComponent("users")}>Users Management</li>
-          <li onClick={() => setActiveComponent("employees")}>Employees Management</li>
+          <li onClick={() => setActiveComponent("contact")}>Messages Management</li>
           <li onClick={() => setActiveComponent("mainpage")}>View MainPage</li>
           <li>
             <button onClick={handleSignOut} className="btn btn-danger">
@@ -100,7 +100,7 @@ const AdminPanel = () => {
         {activeComponent === "orders" && <OrdersCRUD />}
         {activeComponent === "products" && <ProductsCRUD />}
         {activeComponent === "users" && <UsersCRUD />}
-        {activeComponent === "employees" && <EmployeesCRUD />}
+        {activeComponent === "contact" && <ContactCrud />}
         {activeComponent === "mainpage" && <MainPage />}
       </main>
     </div>

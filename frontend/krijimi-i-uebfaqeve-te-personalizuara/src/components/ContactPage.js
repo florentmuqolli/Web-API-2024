@@ -21,33 +21,36 @@ const Contact = () => {
     };
 
     useEffect(() => {
-        console.log("Adding stars...");
         const starContainer = document.querySelector('.stars');
-        if (!starContainer) {
-            console.error("Star container not found!");
-            return;
-        }
-    
+        if (!starContainer) return;
+
         const totalStars = 75;
         for (let i = 0; i < totalStars; i++) {
-          const star = document.createElement('div');
-          star.className = 'star';
-          star.style.top = `${Math.random() * 100}%`;
-          star.style.left = `${Math.random() * 100}%`;
-          star.style.animationDelay = `${Math.random() * 3}s`;
-          starContainer.appendChild(star);
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.animationDelay = `${Math.random() * 3}s`;
+            starContainer.appendChild(star);
         }
-        console.log(`${totalStars} stars added successfully!`);
-      }, []);
+    }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setSuccessMessage('');
         setErrorMessage('');
         setIsSubmitting(true);
 
-        setTimeout(() => {
-            if (formData.name && formData.email && formData.subject && formData.message) {
+        try {
+            const response = await fetch('http://localhost:5000/api/messages', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
                 setSuccessMessage('Your message has been sent successfully!');
                 setFormData({
                     name: '',
@@ -56,10 +59,14 @@ const Contact = () => {
                     message: '',
                 });
             } else {
-                setErrorMessage('Please fill in all fields!');
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to send your message.');
             }
+        } catch (error) {
+            setErrorMessage('An error occurred. Please try again later.');
+        } finally {
             setIsSubmitting(false);
-        }, 1000);
+        }
     };
 
     return (
@@ -75,7 +82,7 @@ const Contact = () => {
                         className="glowing-form border p-4 rounded border-dark"
                     >
                         <div className="mb-3">
-                            <label htmlFor="name" className="form-label text-light">Name</label>
+                            <label htmlFor="name" className="form-label text-light">UserName</label>
                             <input
                                 type="text"
                                 id="name"

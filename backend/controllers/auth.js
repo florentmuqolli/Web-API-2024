@@ -101,11 +101,7 @@ const updateUser = async (req, res) => {
     const { name, email, role } = req.body;
 
     try {
-        const updatedUser = await User.findByIdAndUpdate(
-            id,
-            { name, email, role },
-            { new: true, runValidators: true } 
-        );
+        const updatedUser = await User.findByIdAndUpdate(id,{ name, email, role },{ new: true, runValidators: true } );
 
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });

@@ -6,6 +6,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const productRoutes = require('./routes/productRoutes');
+const ContactRoutes = require('./routes/ContactRoutes');
 const User = require('../backend/models/user');
 const authMiddleware = require('../backend/middleware/authMiddleware');
 
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use("/api/products", productRoutes);
+app.use('/api/messages', ContactRoutes);
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB connected'))
