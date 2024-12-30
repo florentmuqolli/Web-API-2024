@@ -12,7 +12,7 @@ const ProductsPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [userRole, setUserRole] = useState(Cookies.get('userRole') || '');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [user_id, setUserId] = useState(null);
   const [orderStatus, setOrderStatus] = useState(null);
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const ProductsPage = () => {
 
       try {
         const decodedToken = jwtDecode(token);
-        setUserId(decodedToken.userId); 
+        setUserId(decodedToken.user_id); 
       } catch (error) {
         console.error('Invalid token:', error);
         setIsAuthenticated(false); 
@@ -54,8 +54,8 @@ const ProductsPage = () => {
     setModalVisible(true);
   };
 
-  const handleOrder = (productId) => {
-    if (!userId) {
+  const handleOrder = (product_id) => {
+    if (!user_id) {
       console.error('User is not authenticated');
       return;
     }
@@ -65,8 +65,8 @@ const ProductsPage = () => {
     const totalPrice = product.price * quantity; 
 
     const orderData = {
-      userId: userId, 
-      productId: productId,
+      userId: user_id, 
+      productId: product_id,
       quantity: quantity,
       totalPrice: totalPrice,
     };

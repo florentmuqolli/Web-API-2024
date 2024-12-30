@@ -12,7 +12,7 @@ const ProductsCRUD = () => {
   const [notification, setNotification] = useState({ message: '', type: '', visible: false });
 
   const fetchProducts = async () => {
-    const fetchedProducts = await getProducts();
+    const fetchedProducts = await getProducts({credentials: 'include'});
     setProducts(fetchedProducts);
   };
 

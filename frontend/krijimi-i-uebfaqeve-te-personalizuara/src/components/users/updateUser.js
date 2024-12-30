@@ -21,7 +21,12 @@ const UpdateUserForm = ({ userId, closeForm, onUserUpdated, setNotification }) =
 
     const handleSubmit = async (e) => {
             e.preventDefault();
-            const userData = { name, email, role, credentials: 'include' };
+            console.log('Role before submitting:', role);
+            if (!role) {
+                setNotification({ message: 'Role is required', type: 'error', visible: true });
+                return;
+            }
+            const userData = { name, email, role};
             const response = await updateUser(userId, userData);
             if (response.message) {
                 setNotification({ message: response.message, type: 'success', visible: true });
@@ -62,9 +67,12 @@ const UpdateUserForm = ({ userId, closeForm, onUserUpdated, setNotification }) =
                         Role:
                         <select
                             value={role}
-                            onChange={(e) => setRole(e.target.value)}
+                            onChange={(e) => {
+                                setRole(e.target.value)
+                                console.log('Selected role:', e.target.value); }}
                             required
                         >
+                            <option value="" disabled>Select a role</option>
                             <option value="employee">Employee</option>
                             <option value="admin">Admin</option>
                             <option value="user">User</option>

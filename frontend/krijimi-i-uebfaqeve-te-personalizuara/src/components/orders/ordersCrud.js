@@ -13,7 +13,7 @@ const OrdersCRUD = () => {
     const [notification, setNotification] = useState({ message: '', type: '', visible: false });
 
     const fetchOrders = async () => {
-        const fetchedOrders = await getOrders();
+        const fetchedOrders = await getOrders({credentials: 'include'});
         setOrders(fetchedOrders);
     };
 

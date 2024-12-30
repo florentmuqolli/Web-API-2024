@@ -12,8 +12,8 @@ const ContactCRUD = () => {
   const [notification, setNotification] = useState({ message: '', type: '', visible: false });
 
   const fetchMessages = async () => {
-    const fetchedMessages = await getMessages();
-    console.log('Fetched Messages:', fetchedMessages); // Debugging log
+    const fetchedMessages = await getMessages({credentials: 'include'});
+    console.log('Fetched Messages:', fetchedMessages); 
     setMessages(fetchedMessages);
   };
 

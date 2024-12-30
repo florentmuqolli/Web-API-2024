@@ -12,7 +12,7 @@ const UsersCRUD = () => {
     const [notification, setNotification] = useState({ message: '', type: '', visible: false });
 
     const fetchUsers = async () => {
-        const fetchedUsers = await getUser();
+        const fetchedUsers = await getUser({credentials: 'include'});
         console.log("Fetched Users:", fetchedUsers);
         setUsers(fetchedUsers);
     };
