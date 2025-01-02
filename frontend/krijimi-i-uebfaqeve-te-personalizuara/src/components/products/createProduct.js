@@ -7,6 +7,13 @@ const CreateProductForm = ({ closeForm, onProductCreated, setNotification }) => 
     const [price, setPrice] = useState('');
     const[category, setCategory] = useState('');
     const [imageFile, setImageFile] = useState(null);
+    const [imageGallery, setImageGallery] = useState([]);
+    const [tags, setTags] = useState('');
+
+    const handleGalleryChange = (e) => {
+        const files = Array.from(e.target.files); 
+        setImageGallery(files);;  
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,6 +23,10 @@ const CreateProductForm = ({ closeForm, onProductCreated, setNotification }) => 
         formData.append('price', price);
         formData.append('category', category);
         formData.append('image', imageFile);
+        imageGallery.forEach((file) => {
+            formData.append('imageGallery[]', file);  
+        });
+        formData.append('tags', tags.split(',').map(tag => tag.trim()));
     
         const response = await fetch('http://localhost:5000/api/products', {
             method: 'POST',
@@ -82,6 +93,25 @@ const CreateProductForm = ({ closeForm, onProductCreated, setNotification }) => 
                             type="file"
                             accept="image/*"
                             onChange={(e) => setImageFile(e.target.files[0])} 
+                            required
+                        />
+                    </label>
+                    <label>
+                        Image Gallery (choose multiple images):
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleGalleryChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Tags (comma separated):
+                        <input
+                            type="text"
+                            value={tags}
+                            onChange={(e) => setTags(e.target.value)}
                             required
                         />
                     </label>

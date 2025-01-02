@@ -8,6 +8,8 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
     const [imageFile, setImageFile] = useState(null);
+    const [imageGallery, setImageGallery] = useState([]);
+    const [tags, setTags] = useState('');
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -21,6 +23,8 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
                     setPrice(response.data.price || '');
                     setCategory(response.data.category || '');
                     setImageFile(response.data.imageFile || '');
+                    setImageGallery(response.data.imageGallery || '');
+                    setTags(response.data.tags || '');
                 }
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -31,6 +35,12 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
         }
     }, [productID]);
 
+    const handleGalleryChange = (e) => {
+        const files = Array.from(e.target.files); 
+        setImageGallery(files);;  
+    };
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -39,6 +49,10 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
         formData.append('price', price);
         formData.append('category', category);
         formData.append('image', imageFile);
+        imageGallery.forEach((file) => {
+            formData.append('imageGallery[]', file);  
+        });
+        formData.append('tags', tags.split(',').map(tag => tag.trim()));
 
         try {
             const response = await fetch(`http://localhost:5000/api/products/${productID}`, {
@@ -111,6 +125,23 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
                             type="file"
                             accept="image/*"
                             onChange={(e) => setImageFile(e.target.files[0])}
+                        />
+                    </label>
+                    <label>
+                        Image Gallery (choose multiple images):
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleGalleryChange} 
+                        />
+                    </label>
+                    <label>
+                        Tags (comma separated):
+                        <input
+                            type="text"
+                            value={tags}
+                            onChange={(e) => setTags(e.target.value)}
                         />
                     </label>
                     <button type="submit" className="submit-button">Update Product</button>

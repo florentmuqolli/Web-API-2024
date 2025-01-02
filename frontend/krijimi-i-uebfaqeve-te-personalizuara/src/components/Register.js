@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logo from './Designer.png';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -25,7 +26,9 @@ const Register = () => {
 
     return (
         <div className="container mt-4 w-50">
-            <h2 className="text-center mb-4 text-light">Register</h2>
+            <div className="text-center mb-3">
+                <img src={logo} alt="Logo" className="logo-img" height={'60px'} />
+            </div>
             {error && <div className="alert alert-danger">{error}</div>}
             {success && <div className="alert alert-success">{success}</div>}
             <form onSubmit={handleRegister} className="border p-4 rounded border-dark" style={{ background: '#151B23', maxWidth: '400px', margin: '0 auto' }}>

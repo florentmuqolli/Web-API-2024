@@ -3,7 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0d1117;
+    background-color: transparent;
+    backdrop-filter: blur(30px);
     color: #c9d1d9;
     padding: 0.5rem 2rem;
     position: sticky;
@@ -16,15 +17,6 @@
     color: #c9d1d9;
     font-size: 1.5rem;
     text-decoration: none;
-}
-
-.search-bar input {
-    padding: 0.5rem;
-    border: 1px solid #2f81f7;
-    border-radius: 5px;
-    background-color: #161b22;
-    color: #c9d1d9;
-    width: 300px;
 }
 
 .auth-menu {

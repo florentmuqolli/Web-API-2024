@@ -3,8 +3,11 @@
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 30%;
-    position: relative; 
+    width: 50%; /* Adjust width to be more responsive */
+    max-width: 600px; /* Limit max width for large screens */
+    max-height: 90%; /* Ensure it doesn't extend off the screen vertically */
+    overflow: auto; /* Allow scrolling if the content exceeds max height */
+    position: relative;
 }
 
 .form-overlay {
@@ -17,8 +20,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(5px); 
-    z-index: 1000; 
+    backdrop-filter: blur(5px);
+    z-index: 1000;
 }
 
 .order-form {

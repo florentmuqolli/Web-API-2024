@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'; 
+import logo from './Designer.png';
 
 const Login = ({ setIsAuthenticated }) => {
     const [email, setEmail] = useState('');
@@ -49,7 +50,9 @@ const Login = ({ setIsAuthenticated }) => {
 
     return (
         <div className="container mt-4 w-50">
-            <h2 className="text-center mb-4 text-light">Login</h2>
+            <div className="text-center mb-3">
+                <img src={logo} alt="Logo" className="logo-img" height={'60px'} />
+            </div>
             {error && <div className="alert alert-danger">{error}</div>}
             {success && <div className="alert alert-success">{success}</div>}
             <form onSubmit={handleLogin} className="border p-4 rounded border-dark" style={{ background: '#151B23', maxWidth: '300px', margin: '0 auto' }}>

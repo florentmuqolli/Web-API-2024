@@ -6,12 +6,10 @@ console.log(process.env.MYSQL_USER);
 console.log(process.env.MYSQL_PASSWORD); 
 console.log(process.env.MYSQL_DATABASE);
 
-const connectMySQL = require('../config/mysql');
+const { pool } = require('../config/mysql');
 
 const createProdTable = async () => {
     try {
-        const connection = await connectMySQL();
-
         const createTableQuery = `
             CREATE TABLE IF NOT EXISTS products (
                 productID INT PRIMARY KEY AUTO_INCREMENT,
@@ -23,10 +21,8 @@ const createProdTable = async () => {
             );
         `;
 
-        await connection.execute(createTableQuery);
+        await pool.execute(createTableQuery);
         console.log('Products table created successfully');
-
-        connection.end();
     } catch (error) {
         console.error('Error creating Products table:', error.message);
     }

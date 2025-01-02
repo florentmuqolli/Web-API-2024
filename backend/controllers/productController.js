@@ -17,12 +17,13 @@ exports.createProduct = async (req, res) => {
     upload.single('image')(req, res, async (err) => {
         if (err) return res.status(500).json({ error: 'File upload failed' });
 
-        const { productName, description, price, category } = req.body;
+        const { productName, description, price, category, imageGallery, tags } = req.body;
         const imageURL = req.file ? `/uploads/${req.file.filename}` : null;
+        const galleryArray = imageGallery ? JSON.parse(imageGallery) : [];
 
         try {
-            const [result] = await pool.execute("INSERT INTO products (productName, description, price, category, imageURL) VALUES (?, ?, ?, ?, ?)", 
-            [productName, description, price, category, imageURL]);
+            const [result] = await pool.execute("INSERT INTO products (productName, description, price, category, imageURL) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+            [productName, description, price, category, imageURL, JSON.stringify(galleryArray), tags]);
             res.status(201).json({ message: "Product added successfully", productID: result.insertId });
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -57,13 +58,12 @@ exports.updateProduct = async (req, res) => {
             return res.status(500).json({ error: 'File upload failed' });
         }
 
-        const { productName, description, price, category } = req.body;
+        const { productName, description, price, category, imageGallery, tags } = req.body;
         const imageURL = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
 
         try {
-            const [result] = await pool.execute("UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ? WHERE productID = ?", 
-                                                [productName, description, price, category, imageURL, req.params.id]);
-
+            const [result] = await pool.execute("UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ?, imageGallery = ?, tags = ? WHERE productID = ?", 
+                [productName, description, price, category, imageURL, imageGallery, tags, req.params.id]);
             if (result.affectedRows === 0) return res.status(404).json({ message: "Product not found" });
             res.json({ message: "Product updated successfully" });
         } catch (err) {

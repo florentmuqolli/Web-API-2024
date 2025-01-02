@@ -10,6 +10,7 @@ import ProductsPage from './components/ProductsPage';
 import ContactPage from './components/ContactPage';
 import PricingPage from './components/PricingPage';
 import AboutPage from './components/AboutPage';
+import TemplateDetails from './components/TemplateDetails';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -110,6 +111,7 @@ const App = () => {
                 <Route path="/contact" element={<ContactPage />}/>
                 <Route path="/pricing" element={<PricingPage />}/>
                 <Route path="/about" element={<AboutPage />}/>
+                <Route path="/details/:id" element={<TemplateDetails />} />
                 <Route
                     path="/"
                     element={isAuthenticated ? (
