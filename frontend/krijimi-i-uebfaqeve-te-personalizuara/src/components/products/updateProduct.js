@@ -48,21 +48,22 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
         formData.append('description', description);
         formData.append('price', price);
         formData.append('category', category);
-        formData.append('image', imageFile);
+        if (imageFile) {
+            formData.append('image', imageFile);
+        }
         imageGallery.forEach((file) => {
-            formData.append('imageGallery[]', file);  
+            formData.append('imageGallery', file);
         });
-        formData.append('tags', tags.split(',').map(tag => tag.trim()));
-
+        formData.append('tags', tags);
+    
         try {
             const response = await fetch(`http://localhost:5000/api/products/${productID}`, {
                 method: 'PUT',
                 body: formData,
                 credentials: 'include',
             });
-
+    
             const result = await response.json();
-            console.log('Response:', result);
             if (result.message) {
                 setNotification({ message: result.message, type: 'success', visible: true });
                 onProductUpdated();
@@ -75,6 +76,7 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
             setNotification({ message: 'Error updating product', type: 'error', visible: true });
         }
     };
+    
 
     return (
         <div className="form-overlay">

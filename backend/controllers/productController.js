@@ -14,22 +14,45 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 exports.createProduct = async (req, res) => {
-    upload.single('image')(req, res, async (err) => {
-        if (err) return res.status(500).json({ error: 'File upload failed' });
+    upload.fields([
+        { name: 'image', maxCount: 1 },
+        { name: 'imageGallery', maxCount: 10 }
+    ])(req, res, async (err) => {
+        if (err) {
+            console.error('File upload error:', err);
+            return res.status(500).json({ error: 'File upload failed' });
+        }
 
-        const { productName, description, price, category, imageGallery, tags } = req.body;
-        const imageURL = req.file ? `/uploads/${req.file.filename}` : null;
-        const galleryArray = imageGallery ? JSON.parse(imageGallery) : [];
+        const { productName, description, price, category, tags } = req.body;
+        const imageURL = req.files.image && req.files.image[0]
+            ? `/uploads/${req.files.image[0].filename}`
+            : null;
+
+        const galleryArray = req.files.imageGallery
+            ? req.files.imageGallery.map(file => `/uploads/${file.filename}`)
+            : [];
 
         try {
-            const [result] = await pool.execute("INSERT INTO products (productName, description, price, category, imageURL) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-            [productName, description, price, category, imageURL, JSON.stringify(galleryArray), tags]);
+            const [result] = await pool.execute(
+                "INSERT INTO products (productName, description, price, category, imageURL, imageGallery, tags) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [
+                    productName,
+                    description,
+                    price,
+                    category,
+                    imageURL,
+                    JSON.stringify(galleryArray),
+                    JSON.stringify(tags.split(',').map(tag => tag.trim()))
+                ]
+            );
             res.status(201).json({ message: "Product added successfully", productID: result.insertId });
         } catch (err) {
+            console.error('Database error:', err);
             res.status(500).json({ error: err.message });
         }
     });
 };
+
 
 exports.getAllProducts = async (req, res) => {
     try {
@@ -52,18 +75,39 @@ exports.getProductById = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
-    upload.single('image')(req, res, async (err) => {
+    upload.fields([
+        { name: 'image', maxCount: 1 },
+        { name: 'imageGallery', maxCount: 10 }
+    ])(req, res, async (err) => {
         if (err) {
             console.error('File upload error:', err);
             return res.status(500).json({ error: 'File upload failed' });
         }
 
-        const { productName, description, price, category, imageGallery, tags } = req.body;
-        const imageURL = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
+        const { productName, description, price, category, tags } = req.body;
+        const imageURL = req.files.image && req.files.image[0]
+            ? `/uploads/${req.files.image[0].filename}`
+            : req.body.imageUrl;
+
+        const galleryArray = req.files.imageGallery
+            ? req.files.imageGallery.map(file => `/uploads/${file.filename}`)
+            : JSON.parse(req.body.imageGallery || '[]');
 
         try {
-            const [result] = await pool.execute("UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ?, imageGallery = ?, tags = ? WHERE productID = ?", 
-                [productName, description, price, category, imageURL, imageGallery, tags, req.params.id]);
+            const [result] = await pool.execute(
+                "UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ?, imageGallery = ?, tags = ? WHERE productID = ?",
+                [
+                    productName,
+                    description,
+                    price,
+                    category,
+                    imageURL,
+                    JSON.stringify(galleryArray),
+                    JSON.stringify(tags.split(',').map(tag => tag.trim())),
+                    req.params.id
+                ]
+            );
+
             if (result.affectedRows === 0) return res.status(404).json({ message: "Product not found" });
             res.json({ message: "Product updated successfully" });
         } catch (err) {
@@ -72,6 +116,7 @@ exports.updateProduct = async (req, res) => {
         }
     });
 };
+
 
 exports.deleteProduct = async (req, res) => {
     try {

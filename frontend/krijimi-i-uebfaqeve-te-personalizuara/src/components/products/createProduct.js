@@ -23,9 +23,10 @@ const CreateProductForm = ({ closeForm, onProductCreated, setNotification }) => 
         formData.append('price', price);
         formData.append('category', category);
         formData.append('image', imageFile);
-        imageGallery.forEach((file) => {
-            formData.append('imageGallery[]', file);  
+        imageGallery.forEach((file, index) => {
+            formData.append(`imageGallery`, file);
         });
+        
         formData.append('tags', tags.split(',').map(tag => tag.trim()));
     
         const response = await fetch('http://localhost:5000/api/products', {
