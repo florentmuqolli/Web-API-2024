@@ -4,9 +4,9 @@ const User = require('../models/user');
 
 const registerUser = async (req, res) => {
     console.log("Request Body:", req.body);
-    const { name, password, email, role } = req.body;
+    const { name, password, email, role, plan } = req.body;
 
-    console.log("Registering user:", { name, email, role });
+    console.log("Registering user:", { name, email, role, plan });
 
     try {
         const existingUser = await User.findOne({ email });
@@ -21,6 +21,7 @@ const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             role: role || 'user', 
+            plan: plan || 'basic'
         });
 
         res.status(201).json({ message: 'Përdorues i regjistruar me sukses' });
@@ -101,7 +102,7 @@ const updateUser = async (req, res) => {
     const { name, email, role } = req.body;
 
     try {
-        const updatedUser = await User.findByIdAndUpdate(id,{ name, email, role },{ new: true, runValidators: true } );
+        const updatedUser = await User.findByIdAndUpdate(id,{ name, email, role, plan },{ new: true, runValidators: true } );
 
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
@@ -131,6 +132,28 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const getCurrentUser = async (req, res) => {
+    const authToken = req.cookies.authToken;
+  
+    if (!authToken) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+  
+    try {
+      const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id).select('-password');
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.status(200).json(user);
+    } catch (error) {
+      console.error('Error verifying token:', error);
+      res.status(401).json({ message: 'Invalid token' });
+    }
+  };
+
 const getStatus = (req, res) => {
     const authToken = req.cookies.authToken;
 
@@ -156,6 +179,7 @@ module.exports = {
     loginUser,
     getStatus,
     getUsers,
+    getCurrentUser,
     updateUser,
     deleteUser,
 };

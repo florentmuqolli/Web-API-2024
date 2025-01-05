@@ -11,7 +11,7 @@ const PricingPage = () => {
   const plans = [
     {
       name: 'Basic Plan',
-      price: '$9.99',
+      price: 'Free',
       features: [
         'Access to basic templates',
         'Up to 10 projects',
@@ -114,7 +114,7 @@ const PricingPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <button type="submit" className="proceed-btn">Proceed</button>
+              <button type="submit" className="proceed-btn">Request Now</button>
             </form>
             {successMessage && <p className="success-message">{successMessage}</p>}
           </div>

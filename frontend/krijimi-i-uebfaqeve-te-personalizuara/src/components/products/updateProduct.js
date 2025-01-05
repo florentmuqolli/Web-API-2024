@@ -54,7 +54,7 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
         imageGallery.forEach((file) => {
             formData.append('imageGallery', file);
         });
-        formData.append('tags', tags);
+        formData.append('tags', tags.split(',').map(tag => tag.trim()));
     
         try {
             const response = await fetch(`http://localhost:5000/api/products/${productID}`, {
@@ -127,6 +127,7 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
                             type="file"
                             accept="image/*"
                             onChange={(e) => setImageFile(e.target.files[0])}
+                            required
                         />
                     </label>
                     <label>
@@ -136,6 +137,7 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
                             accept="image/*"
                             multiple
                             onChange={handleGalleryChange} 
+                            required
                         />
                     </label>
                     <label>

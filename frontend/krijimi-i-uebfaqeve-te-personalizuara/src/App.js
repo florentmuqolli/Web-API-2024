@@ -11,6 +11,7 @@ import ContactPage from './components/ContactPage';
 import PricingPage from './components/PricingPage';
 import AboutPage from './components/AboutPage';
 import TemplateDetails from './components/TemplateDetails';
+import ProfilePage from './components/ProfilePage';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -74,7 +75,6 @@ const App = () => {
             if (isAuthenticated && userRole) {
                 console.log(`Authenticated: ${isAuthenticated}, Role: ${userRole}`);
                 if (location.pathname === '/' || location.pathname === '/Login' || location.pathname === '/Register') {
-                    // Redirect only if on the initial or auth pages
                     if (userRole === 'admin' || userRole === 'employee') {
                         navigate('/adminpanel');
                     } else {
@@ -112,6 +112,7 @@ const App = () => {
                 <Route path="/pricing" element={<PricingPage />}/>
                 <Route path="/about" element={<AboutPage />}/>
                 <Route path="/details/:id" element={<TemplateDetails />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route
                     path="/"
                     element={isAuthenticated ? (

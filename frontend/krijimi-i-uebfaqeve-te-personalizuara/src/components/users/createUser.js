@@ -7,10 +7,11 @@ const CreateUserForm = ({ closeForm, onUserCreated, setNotification }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
+    const [plan, setPlan] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userData = { name, password, email, role, credentials: 'include' };
+        const userData = { name, password, email, role, plan, credentials: 'include' };
         const response = await createUser(userData);
         if (response.message) {
             setNotification({ message: response.message, type: 'success', visible: true });
@@ -63,9 +64,23 @@ const CreateUserForm = ({ closeForm, onUserCreated, setNotification }) => {
                             onChange={(e) => setRole(e.target.value)}
                             required
                         >
+                            <option value="" disabled>Select a role</option>
                             <option value="employee">Employee</option>
                             <option value="admin">Admin</option>
                             <option value="user">User</option>
+                        </select>
+                    </label>
+                    <label>
+                        Plan:
+                        <select
+                            value={plan}
+                            onChange={(e) => setPlan(e.target.value)}
+                            required
+                        >
+                            <option value="" disabled>Select a plan</option>
+                            <option value="basic">Basic</option>
+                            <option value="standard">Standard</option>
+                            <option value="premium">Premium</option>
                         </select>
                     </label>
                     <button type="submit" className="submit-button">Create User</button>

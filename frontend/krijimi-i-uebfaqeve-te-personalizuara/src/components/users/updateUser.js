@@ -6,6 +6,7 @@ const UpdateUserForm = ({ userId, closeForm, onUserUpdated, setNotification }) =
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
+    const [plan, setPlan] = useState('');
 
     useEffect(() => {
             const fetchUserDetails = async () => {
@@ -14,6 +15,7 @@ const UpdateUserForm = ({ userId, closeForm, onUserUpdated, setNotification }) =
                     setName(userDetails.name || '');
                     setEmail(userDetails.email || '');
                     setRole(userDetails.role || '');
+                    setPlan(userDetails.plan || '')
                 }
             };
             fetchUserDetails();
@@ -26,7 +28,7 @@ const UpdateUserForm = ({ userId, closeForm, onUserUpdated, setNotification }) =
                 setNotification({ message: 'Role is required', type: 'error', visible: true });
                 return;
             }
-            const userData = { name, email, role};
+            const userData = { name, email, role, plan};
             const response = await updateUser(userId, userData);
             if (response.message) {
                 setNotification({ message: response.message, type: 'success', visible: true });
@@ -76,6 +78,19 @@ const UpdateUserForm = ({ userId, closeForm, onUserUpdated, setNotification }) =
                             <option value="employee">Employee</option>
                             <option value="admin">Admin</option>
                             <option value="user">User</option>
+                        </select>
+                    </label>
+                    <label>
+                        Plan:
+                        <select
+                            value={plan}
+                            onChange={(e) => setPlan(e.target.value)}
+                            required
+                        >
+                            <option value="" disabled>Select a plan</option>
+                            <option value="basic">Basic</option>
+                            <option value="standard">Standard</option>
+                            <option value="premium">Premium</option>
                         </select>
                     </label>
                     <button type="submit" className="submit-button">Update User</button>

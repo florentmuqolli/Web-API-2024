@@ -23,6 +23,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     width: 300px;
+    height: 400px;
     padding: 20px;
     text-align: center;
     position: relative;
@@ -74,7 +75,9 @@
   }
   
   .choose-plan-btn {
-    margin-top: 15px;
+    position: absolute;
+    bottom: 10px;
+    right: 80px;
     padding: 10px 20px;
     background: #52b788;
     border: none;

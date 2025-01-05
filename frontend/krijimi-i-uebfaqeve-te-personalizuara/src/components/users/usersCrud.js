@@ -95,6 +95,7 @@ const UsersCRUD = () => {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th>Plan</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -106,6 +107,7 @@ const UsersCRUD = () => {
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{user.role}</td>
+                                <td>{user.plan}</td>
                                 <td>
                                     <button
                                         className="edit-button"

@@ -1,4 +1,3 @@
-/* src/Header.css */
 .header {
     display: flex;
     justify-content: space-between;
@@ -88,6 +87,57 @@
 .auth-btn:hover {
     background-color: #45a049;
 }
+
+.user-menu {
+    position: relative;
+}
+  
+.profile-icon {
+    cursor: pointer;
+    color: #c9d1d9;
+    user-select: none;
+}
+ 
+.dropdown-menuu {
+    position: absolute;
+    padding: 10px 20px;
+    background-color:#151c27;
+    top: 40px;
+    right: 0;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    display: none; 
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    user-select: none;
+}
+
+.dropdown-menuu.show {
+    display: block;
+    opacity: 1; 
+    transform: translateY(0); 
+}
+
+
+.dropdown-item {
+    padding: 10px 20px;
+    color: #c9d1d9;
+    text-align: left;
+    background: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+.dropdown-item:hover {
+    background-color: #238636;
+    color: white;
+}
+
+  
 
 @media (max-width: 768px) {
     .search-bar input {

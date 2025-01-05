@@ -25,7 +25,13 @@ const TemplateDetails = () => {
         const response = await axios.get(`http://localhost:5000/api/products/${id}`, {
           withCredentials: true,
         });
-        setTemplate(response.data);
+
+        const templateData = {
+          ...response.data,
+          tags: JSON.parse(response.data.tags), 
+      };
+
+        setTemplate(templateData);
       } catch (error) {
         console.error('Error fetching template details:', error);
         setError('Failed to load template details. Please try again later.');
@@ -78,10 +84,15 @@ const TemplateDetails = () => {
           <p className="template-description">{template.description}</p>
           <p className="template-price">Price: ${template.price}</p>
           <div className="template-tags"> Item Tags
-            {tags.map((tag, index) => (
+            {tags && Array.isArray(tags) ? (
+              tags.map((tag, index) => (
               <span key={index} className="tag">{tag}</span>
-            ))}
+            ))
+        ) : (
+          <span>No tags available</span>
+            )}
           </div>
+
           <button className="btn-order" onClick={() => navigate('/order')}>Request Now</button>
         </div>
       </div>

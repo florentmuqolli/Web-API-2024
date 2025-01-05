@@ -32,6 +32,9 @@ exports.createProduct = async (req, res) => {
             ? req.files.imageGallery.map(file => `/uploads/${file.filename}`)
             : [];
 
+            const tagsArray = tags.split(',').map(tag => tag.trim());
+            const tagsJSON = JSON.stringify(tagsArray);
+
         try {
             const [result] = await pool.execute(
                 "INSERT INTO products (productName, description, price, category, imageURL, imageGallery, tags) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -42,7 +45,7 @@ exports.createProduct = async (req, res) => {
                     category,
                     imageURL,
                     JSON.stringify(galleryArray),
-                    JSON.stringify(tags.split(',').map(tag => tag.trim()))
+                    tagsJSON
                 ]
             );
             res.status(201).json({ message: "Product added successfully", productID: result.insertId });
@@ -93,6 +96,9 @@ exports.updateProduct = async (req, res) => {
             ? req.files.imageGallery.map(file => `/uploads/${file.filename}`)
             : JSON.parse(req.body.imageGallery || '[]');
 
+            const tagsArray = tags.split(',').map(tag => tag.trim());
+            const tagsJSON = JSON.stringify(tagsArray);
+
         try {
             const [result] = await pool.execute(
                 "UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ?, imageGallery = ?, tags = ? WHERE productID = ?",
@@ -103,7 +109,7 @@ exports.updateProduct = async (req, res) => {
                     category,
                     imageURL,
                     JSON.stringify(galleryArray),
-                    JSON.stringify(tags.split(',').map(tag => tag.trim())),
+                    tagsJSON,
                     req.params.id
                 ]
             );
