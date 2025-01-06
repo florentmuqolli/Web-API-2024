@@ -8,6 +8,29 @@
   border-radius: 10px;
 }
 
+.alertt {
+  position: fixed; 
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  max-width: 90%;
+  text-align: center;
+}
+
+.alertt-danger {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.alertt-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
 .back-button {
   background-color: #555;
   color: #fff;

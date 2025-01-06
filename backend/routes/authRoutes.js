@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, getStatus, getUsers, getCurrentUser, updateUser, deleteUser } = require('../controllers/auth');
+const { registerUser, loginUser, getStatus, getUsers, getCurrentUser, changePassword, updateUser, deleteUser } = require('../controllers/auth');
 const authMiddleware = require('../middleware/authMiddleware');
 const roleMiddleware = require('../middleware/roleMiddleware');
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
+router.post('/change-password', authMiddleware, changePassword);
 router.get('/', authMiddleware, getUsers);
 router.get('/me', authMiddleware, getCurrentUser);
 router.put('/:id', authMiddleware, updateUser);

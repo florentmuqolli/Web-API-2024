@@ -72,6 +72,25 @@ export const getCurrentUser = async () => {
     }
   };
   
+  export const changePassword = async (currentPassword, newPassword) => {
+    const token = Cookies.get('authToken');
+    if (!token) {
+        console.error('No token found, please log in.');
+        return { message: 'Authentication required' };
+    }
+    try {
+        const response = await axios.post(
+            'http://localhost:5000/api/auth/change-password',
+            { currentPassword, newPassword },
+            { withCredentials: true }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error changing password:', error);
+        throw new Error(error.response?.data?.message || 'Failed to change password');
+    }
+};
+
 
 export const deleteUser = async (id) => {
     console.log('Deleting user with ID:', id);

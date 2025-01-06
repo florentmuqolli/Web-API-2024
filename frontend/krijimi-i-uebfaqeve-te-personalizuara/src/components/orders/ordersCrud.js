@@ -98,6 +98,7 @@ const OrdersCRUD = () => {
                 <thead>
                     <tr>
                         <th>Order ID</th>
+                        <th>User ID</th>
                         <th>Product ID</th>
                         <th>Quantity</th>
                         <th>Total Price</th>
@@ -113,6 +114,7 @@ const OrdersCRUD = () => {
                         orders.map((order) => (
                             <tr key={order.id}>
                                 <td>{order.id}</td>
+                                <td>{order.user_id}</td>
                                 <td>{order.product_id}</td>
                                 <td>{order.quantity}</td>
                                 <td>{order.total_price}</td>

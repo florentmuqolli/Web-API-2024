@@ -8,7 +8,7 @@
   width: 250px;
   padding: 1rem;
   border: 1px solid #c9d1d9;
-  border-radius: 10px;
+  border-radius: 5px;
   color: #c9d1d9;
 }
 
@@ -21,14 +21,14 @@
 .profile-data {
   padding: 1rem;
   border: 1px solid #c9d1d9;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .profile-details {
   padding: 1rem;
   margin-top: 1rem;
   border: 1px solid #c9d1d9;
-  border-radius: 10px;
+  border-radius: 5px;
   color: #c9d1d9;
   display: flex;
   flex-wrap: wrap;
@@ -56,13 +56,14 @@
   display: block;
   color: #c9d1d9;
   margin: 3px;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
 }
 
 .options:hover {
-  background-color: #238636;
+  background-color: #b4e2bd;
+  color: #238636;
 }
 
 .btn-green {

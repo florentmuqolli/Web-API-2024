@@ -1,0 +1,110 @@
+.change-password-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #0D1117;
+}
+
+.alert {
+  position: fixed; 
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  max-width: 90%;
+  text-align: center;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.alert-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.change-password-form {
+  background: #0F141A;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+  
+  .change-password-form {
+    background: #0F141A;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .change-password-form h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #c9d1d9;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    color: #c9d1d9;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    background-color: #0D1117;
+    font-size: 16px;
+    border: 1px solid #a0a2a5;
+    color: #c9d1d9;
+    border-radius: 5px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+  
+  .btn-submit, .btn-reset {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btn-submit {
+    background-color: #238636;
+    color: #fff;
+  }
+  
+  .btn-submit:hover {
+    background-color: #1e7430;
+  }
+  
+  .btn-reset {
+    background-color: #ddd;
+    color: #333;
+  }
+  
+  .btn-reset:hover {
+    background-color: #bbb;
+  }
+  

@@ -23,7 +23,7 @@ const PricingPage = () => {
       name: 'Standard Plan',
       price: '$19.99',
       features: [
-        'Access to all templates',
+        'Access to standard templates',
         'Up to 50 projects',
         'Priority support',
         'Customizable templates',

@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 import './TemplateDetails.css';
+import { createOrder } from '../api/orders';
 
 const TemplateDetails = () => {
   const { id } = useParams();
   const [template, setTemplate] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setErrorMessage] = useState('');
+  const [success, setSuccessMessage] = useState('');
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -18,6 +22,43 @@ const TemplateDetails = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
   
+  const handleRequest = async () => {
+    const token = Cookies.get('authToken');
+    if (!token) {
+      console.error('No token found, please log in.');
+      return;
+    }
+
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.id;
+
+    const orderData = {
+      userId: userId,
+      productId: template.productID,
+      quantity: 1,
+      totalPrice: template.price,
+      credentials: 'include',
+    };
+
+    try {
+      const response = await createOrder(orderData);
+      if (response.message === 'Order created') {
+        console.log('Order placed successfully');
+        setSuccessMessage('Further instructions will be included in your email, thank you!');
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 3000);
+      } else {
+        console.error('Order creation failed:', response.message);
+        setErrorMessage('Order creation failed!');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchTemplateDetails = async () => {
@@ -34,7 +75,7 @@ const TemplateDetails = () => {
         setTemplate(templateData);
       } catch (error) {
         console.error('Error fetching template details:', error);
-        setError('Failed to load template details. Please try again later.');
+        setErrorMessage('Failed to load template details. Please try again later.');
       }
     };
 
@@ -54,6 +95,8 @@ const TemplateDetails = () => {
 
   return (
     <div className="template-details">
+       {error && <div className="alertt alertt-danger">{error}</div>}
+       {success && <div className="alertt alertt-success">{success}</div>}
       <button onClick={() => navigate(-1)} className="back-button">
         Back
       </button>
@@ -93,7 +136,7 @@ const TemplateDetails = () => {
             )}
           </div>
 
-          <button className="btn-order" onClick={() => navigate('/order')}>Request Now</button>
+          <button className="btn-order" onClick={handleRequest}>Request Now</button>
         </div>
       </div>
     </div>

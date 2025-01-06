@@ -154,6 +154,37 @@ const getCurrentUser = async (req, res) => {
     }
   };
 
+  const changePassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id; 
+
+    if (!currentPassword || !newPassword) {
+        return res.status(400).json({ message: 'Current and new passwords are required' });
+    }
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Current password is incorrect' });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        await user.save();
+
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Error updating password:', error);
+        res.status(500).json({ message: 'Failed to update password', error: error.message });
+    }
+};
+
+
 const getStatus = (req, res) => {
     const authToken = req.cookies.authToken;
 
@@ -180,6 +211,7 @@ module.exports = {
     getStatus,
     getUsers,
     getCurrentUser,
+    changePassword,
     updateUser,
     deleteUser,
 };
