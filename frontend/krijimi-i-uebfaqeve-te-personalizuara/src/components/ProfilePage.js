@@ -28,10 +28,6 @@ const ProfilePage = () => {
     fetchUserData();
   }, []);
 
-  const handleEditProfile = () => {
-    alert('Edit profile functionality is not implemented yet');
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -65,15 +61,15 @@ const ProfilePage = () => {
         <div className="profile-details">
           <div className="detail">
             <strong>Name*</strong>
-            <p>{userData.username}<hr/></p>
+            <p>{userData.username}</p><hr/>
           </div>
           <div className="detail">
             <strong>Email*</strong>
-            <p>{userData.email}<hr/></p>
+            <p>{userData.email}</p><hr/>
           </div>
           <div className="detail">
             <strong>Plan*</strong>
-            <p>{userData.plan}<hr/></p>
+            <p>{userData.plan}</p><hr/>
           </div>
           <div className="detail">
             <strong>Correct</strong>

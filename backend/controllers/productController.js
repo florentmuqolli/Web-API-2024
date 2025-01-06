@@ -23,7 +23,7 @@ exports.createProduct = async (req, res) => {
             return res.status(500).json({ error: 'File upload failed' });
         }
 
-        const { productName, description, price, category, tags } = req.body;
+        const { productName, description, price, category, tags, type } = req.body;
         const imageURL = req.files.image && req.files.image[0]
             ? `/uploads/${req.files.image[0].filename}`
             : null;
@@ -37,7 +37,7 @@ exports.createProduct = async (req, res) => {
 
         try {
             const [result] = await pool.execute(
-                "INSERT INTO products (productName, description, price, category, imageURL, imageGallery, tags) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO products (productName, description, price, category, imageURL, imageGallery, tags, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 [
                     productName,
                     description,
@@ -45,7 +45,8 @@ exports.createProduct = async (req, res) => {
                     category,
                     imageURL,
                     JSON.stringify(galleryArray),
-                    tagsJSON
+                    tagsJSON,
+                    type
                 ]
             );
             res.status(201).json({ message: "Product added successfully", productID: result.insertId });
@@ -87,7 +88,7 @@ exports.updateProduct = async (req, res) => {
             return res.status(500).json({ error: 'File upload failed' });
         }
 
-        const { productName, description, price, category, tags } = req.body;
+        const { productName, description, price, category, tags, type } = req.body;
         const imageURL = req.files.image && req.files.image[0]
             ? `/uploads/${req.files.image[0].filename}`
             : req.body.imageUrl;
@@ -101,7 +102,7 @@ exports.updateProduct = async (req, res) => {
 
         try {
             const [result] = await pool.execute(
-                "UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ?, imageGallery = ?, tags = ? WHERE productID = ?",
+                "UPDATE products SET productName = ?, description = ?, price = ?, category = ?, imageURL = ?, imageGallery = ?, tags = ?, type = ? WHERE productID = ?",
                 [
                     productName,
                     description,
@@ -110,6 +111,7 @@ exports.updateProduct = async (req, res) => {
                     imageURL,
                     JSON.stringify(galleryArray),
                     tagsJSON,
+                    type,
                     req.params.id
                 ]
             );

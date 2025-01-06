@@ -58,8 +58,8 @@ const ChangePasswordPage = () => {
 
   return (
     <div className="change-password-page">
-    {error && <div className="alert alert-danger">{error}</div>}
-    {success && <div className="alert alert-success">{success}</div>}
+    {error && <div className="alerrt alerrt-danger">{error}</div>}
+    {success && <div className="alerrt alerrt-success">{success}</div>}
     <form className="change-password-form" onSubmit={handleSubmit}>
       <h1>Change Password</h1>
       <div className="form-group">

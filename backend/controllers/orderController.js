@@ -41,6 +41,29 @@ exports.getOrders = async (req, res) => {
     }
 };
 
+exports.getOrdersByUser = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        if (!userId) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+        const [orders] = await pool.execute(
+            'SELECT id, product_id, quantity, total_price FROM orders WHERE user_id = ?',
+            [userId]
+        );
+        console.log('Fetched Orders for User:', userId, orders);
+        if (orders.length === 0) {
+            return res.status(404).json({ message: 'No orders found for this user' });
+        }
+
+        res.status(200).json({orders});
+    } catch (error) {
+        console.error('Get Orders Error:', error.message);
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+};
+
+
 exports.updateOrder = async (req, res) => {
     try {
         const { id } = req.params;

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getCurrentUser } from '../api/users';
 import './PricingPage.css';
 
 const PricingPage = () => {
@@ -7,10 +8,13 @@ const PricingPage = () => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [currentUserPlan, setCurrentUserPlan] = useState(null);
+  const [loading, setLoading] = useState(null);
+  
 
   const plans = [
     {
-      name: 'Basic Plan',
+      name: 'basic',
       price: 'Free',
       features: [
         'Access to basic templates',
@@ -20,7 +24,7 @@ const PricingPage = () => {
       ],
     },
     {
-      name: 'Standard Plan',
+      name: 'standard',
       price: '$19.99',
       features: [
         'Access to standard templates',
@@ -32,7 +36,7 @@ const PricingPage = () => {
       recommended: true,
     },
     {
-      name: 'Premium Plan',
+      name: 'premium',
       price: '$29.99',
       features: [
         'Unlimited template access',
@@ -45,7 +49,27 @@ const PricingPage = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          setCurrentUserPlan(user.plan);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }finally {
+        setLoading(false); 
+      }
+    };
+    fetchCurrentUser();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+
   const handleChoosePlan = (plan) => {
+    console.log('plan: ', currentUserPlan);
+    if (currentUserPlan === plan.name) return;
     setSelectedPlan(plan);
     setFormVisible(true);
   };
@@ -89,7 +113,14 @@ const PricingPage = () => {
                 </li>
               ))}
             </ul>
-            <button className="choose-plan-btn" onClick={() => handleChoosePlan(plan)}>Choose Plan</button>
+            {currentUserPlan && currentUserPlan === plan.name ? (
+              <span className="current-plan">Current</span>
+            ) : (
+              <button className="choose-plan-btn" onClick={() => handleChoosePlan(plan)}>
+                Choose Plan
+              </button>
+            )}
+
           </div>
         ))}
       </div>

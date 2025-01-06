@@ -20,6 +20,22 @@ export const getOrders = async () => {
     }
 };
 
+export const getOrdersByUser = async (userId) => {
+    const token = Cookies.get('authToken');
+    if (!token) {
+        console.error('No token found, please log in.');
+        return;
+    }
+    try {
+        const response = await axios.get(`http://localhost:5000/api/orders/${userId}`,{
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        return [];
+    }
+};
 
 export const createOrder = async (orderData) => {
     const token = Cookies.get('authToken');

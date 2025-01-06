@@ -2,6 +2,29 @@
     padding-bottom: 80px; 
 }
 
+.aalert {
+    position: fixed; 
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    max-width: 90%;
+    text-align: center;
+  }
+  
+  .aalert-danger {
+    background-color: #f8d7da;
+    color: #842029;
+  }
+  
+  .aalert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+  }
+
 .contact-details-card {
     position: relative;
     padding: 20px;

@@ -13,6 +13,7 @@ import AboutPage from './components/AboutPage';
 import TemplateDetails from './components/TemplateDetails';
 import ProfilePage from './components/ProfilePage';
 import ChangePasswordPage from './components/ChangePass';
+import OrdersPage from './components/Packages';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -115,6 +116,7 @@ const App = () => {
                 <Route path="/details/:id" element={<TemplateDetails />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/passwordchanger" element={<ChangePasswordPage />} />
+                <Route path="/packages" element={<OrdersPage />} />
                 <Route
                     path="/"
                     element={isAuthenticated ? (

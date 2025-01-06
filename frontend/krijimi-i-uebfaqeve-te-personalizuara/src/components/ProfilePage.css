@@ -46,6 +46,10 @@
   flex: 1 1 45%;
 }
 
+.profile-details .detail p {
+  margin-top: 1.2rem;
+}
+
 
 .profile-data h1 {
   color: #c9d1d9;

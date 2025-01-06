@@ -16,7 +16,7 @@ const MainPage = () => {
   return (
     <div className="main-page">
       <section className="hero">
-        <h1>Welcome to Ueb Crimsons</h1>
+        <h1>Welcome to Crimsons</h1>
         <p>Your go-to service for creating customized websites with ease.</p>
         <div className="hero-actions">
           <button className="btn-green" onClick={handleViewTemplates}>

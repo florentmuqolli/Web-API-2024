@@ -7,7 +7,7 @@
   background-color: #0D1117;
 }
 
-.alert {
+.alerrt {
   position: fixed; 
   top: 80px;
   left: 50%;
@@ -20,26 +20,16 @@
   text-align: center;
 }
 
-.alert-danger {
+.alerrt-danger {
   background-color: #f8d7da;
   color: #842029;
 }
 
-.alert-success {
+.alerrt-success {
   background-color: #d1e7dd;
   color: #0f5132;
 }
 
-.change-password-form {
-  background: #0F141A;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  max-width: 400px;
-  width: 100%;
-}
-
-  
   .change-password-form {
     background: #0F141A;
     border-radius: 10px;

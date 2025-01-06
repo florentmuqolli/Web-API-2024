@@ -52,6 +52,9 @@ const Contact = () => {
 
             if (response.ok) {
                 setSuccessMessage('Your message has been sent successfully!');
+                setTimeout(() => {
+                    setSuccessMessage('');
+                }, 3000);
                 setFormData({
                     name: '',
                     email: '',
@@ -64,6 +67,9 @@ const Contact = () => {
             }
         } catch (error) {
             setErrorMessage('An error occurred. Please try again later.');
+            setTimeout(() => {
+                setErrorMessage('');
+              }, 3000);
         } finally {
             setIsSubmitting(false);
         }
@@ -75,8 +81,8 @@ const Contact = () => {
             <div className="row">
                 <div className="col-md-6">
                     <h2 className="text-center mb-4 text-light">Contact Us</h2>
-                    {successMessage && <div className="alert alert-success">{successMessage}</div>}
-                    {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+                    {successMessage && <div className="aalert aalert-success">{successMessage}</div>}
+                    {errorMessage && <div className="aalert aalert-danger">{errorMessage}</div>}
                     <form
                         onSubmit={handleSubmit}
                         className="glowing-form border p-4 rounded border-dark"

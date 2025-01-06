@@ -102,13 +102,14 @@ const ProductsCRUD = () => {
                         <th>Price</th>
                         <th>Category</th>
                         <th>Image URL</th>
+                        <th>Type</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {products.length === 0 ? (
                         <tr>
-                            <td colSpan="5">No products found</td>
+                            <td colSpan="7">No products found</td>
                         </tr>
                     ) : (
                         products.map((product) => (
@@ -119,6 +120,7 @@ const ProductsCRUD = () => {
                                 <td>{product.price}</td>
                                 <td>{product.category}</td>
                                 <td>{product.imageURL}</td>
+                                <td>{product.type}</td>
                                 <td>
                                     <button
                                         className="edit-button"

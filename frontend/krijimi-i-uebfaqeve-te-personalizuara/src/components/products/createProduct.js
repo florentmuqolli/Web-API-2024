@@ -9,6 +9,7 @@ const CreateProductForm = ({ closeForm, onProductCreated, setNotification }) => 
     const [imageFile, setImageFile] = useState(null);
     const [imageGallery, setImageGallery] = useState([]);
     const [tags, setTags] = useState('');
+    const [type, setType] = useState('');
 
     const handleGalleryChange = (e) => {
         const files = Array.from(e.target.files); 
@@ -26,8 +27,8 @@ const CreateProductForm = ({ closeForm, onProductCreated, setNotification }) => 
         imageGallery.forEach((file, index) => {
             formData.append(`imageGallery`, file);
         });
-        
         formData.append('tags', tags.split(',').map(tag => tag.trim()));
+        formData.append('type', type);
     
         const response = await fetch('http://localhost:5000/api/products', {
             method: 'POST',
@@ -113,6 +114,15 @@ const CreateProductForm = ({ closeForm, onProductCreated, setNotification }) => 
                             type="text"
                             value={tags}
                             onChange={(e) => setTags(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Type:
+                        <input
+                            type="text"
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
                             required
                         />
                     </label>

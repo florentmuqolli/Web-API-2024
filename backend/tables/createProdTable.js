@@ -11,14 +11,8 @@ const { pool } = require('../config/mysql');
 const createProdTable = async () => {
     try {
         const createTableQuery = `
-            CREATE TABLE IF NOT EXISTS products (
-                productID INT PRIMARY KEY AUTO_INCREMENT,
-                productName VARCHAR(255) NOT NULL,
-                description TEXT,
-                price DECIMAL(10, 2) NOT NULL,
-                category VARCHAR(100),
-                imageURL VARCHAR(255)
-            );
+            ALTER TABLE products
+            ADD COLUMN type VARCHAR(50) NOT NULL;
         `;
 
         await pool.execute(createTableQuery);

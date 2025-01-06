@@ -10,6 +10,7 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
     const [imageFile, setImageFile] = useState(null);
     const [imageGallery, setImageGallery] = useState([]);
     const [tags, setTags] = useState('');
+    const [type, setType] = useState('');
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -25,6 +26,7 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
                     setImageFile(response.data.imageFile || '');
                     setImageGallery(response.data.imageGallery || '');
                     setTags(response.data.tags || '');
+                    setType(response.data.type || '');
                 }
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -55,6 +57,7 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
             formData.append('imageGallery', file);
         });
         formData.append('tags', tags.split(',').map(tag => tag.trim()));
+        formData.append('type', type);
     
         try {
             const response = await fetch(`http://localhost:5000/api/products/${productID}`, {
@@ -146,6 +149,15 @@ const UpdateProductForm = ({ productID, closeForm, onProductUpdated, setNotifica
                             type="text"
                             value={tags}
                             onChange={(e) => setTags(e.target.value)}
+                        />
+                    </label>
+                    <label>
+                        Type:
+                        <input
+                            type="text"
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                            required
                         />
                     </label>
                     <button type="submit" className="submit-button">Update Product</button>
