@@ -69,7 +69,7 @@ const ProductsPage = () => {
   };
 
   const filteredProducts = products.filter((product) => {
-    if (userPlan === 'basic') {
+    if (userPlan === 'basic' || userPlan === '') {
       return product.type === 'basic'; 
     } else if (userPlan === 'standard') {
       return product.type === 'basic' || product.type === 'standard'; 

@@ -100,7 +100,6 @@ const getUsers = async (req, res) => {
 const updateUser = async (req, res) => {
     const { id } = req.params;
     const { name, email, role } = req.body;
-
     try {
         const updatedUser = await User.findByIdAndUpdate(id,{ name, email, role, plan },{ new: true, runValidators: true } );
 
